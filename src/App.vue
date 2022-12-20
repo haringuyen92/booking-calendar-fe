@@ -1,26 +1,34 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <Sidebar />
+  <div class="h__left">
+    <Navbar/>
+    <Warning />
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+  import Navbar from "@/components/layouts/Navbar.vue";
+  import Warning from "@/components/modal/Warning.vue";
+  import Sidebar from "@/components/layouts/Sidebar.vue";
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
+  export default {
+    name: 'App',
+    components: {
+      Sidebar,
+      Warning,
+      Navbar,
+    }
   }
-}
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  #app *{
+    font-family: "Source Code Pro", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-weight: bold;
+  }
+  .h__left{
+    margin-left: 250px;
+  }
 </style>
