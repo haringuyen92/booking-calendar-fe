@@ -2,7 +2,7 @@
   <div class="h__sidebar">
     <ul class="nav flex-column">
       <li class="nav-item h__sidebar_menu_item" v-for="(item, key) in m_list" :key="key">
-        <a class="nav-link text-white" aria-current="page" :href="item.url">{{ item.text }}</a>
+        <router-link class="nav-link text-white" aria-current="page" :to="item.url">{{ item.text }}</router-link>
       </li>
     </ul>
   </div>
