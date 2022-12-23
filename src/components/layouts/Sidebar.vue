@@ -2,7 +2,7 @@
   <div class="h__sidebar">
     <ul class="nav flex-column">
       <li class="nav-item h__sidebar_menu_item" v-for="(item, key) in m_list" :key="key">
-        <router-link class="nav-link text-white" aria-current="page" :to="item.url">{{ item.text }}</router-link>
+        <RouterLink class="nav-link text-white" aria-current="page" :to="item.url">{{ item.text }}</RouterLink>
       </li>
     </ul>
   </div>
@@ -10,6 +10,8 @@
 
 <script>
   export default {
+    created() {
+    },
     data(){
       return {
         m_list: [
@@ -69,5 +71,8 @@
   }
   .h__sidebar_menu_item .nav-link{
     padding: 15px 20px !important;
+  }
+  .router-link-exact-active {
+    background-color: #51bd8f;
   }
 </style>

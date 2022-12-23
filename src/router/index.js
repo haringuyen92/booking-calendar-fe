@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "@/components/Home.vue";
 import Login from "@/components/auth/Login.vue";
-import Store from "@/components/store/Index.vue";
-import Staff from "@/components/staff/Index.vue";
-import SettingTime from "@/components/setting-time/Index.vue";
-import Service from "@/components/service/Index.vue";
+import Store from "@/components/pages/store/Index.vue";
+import Staff from "@/components/pages/staff/Index.vue";
+import SettingTime from "@/components/pages/setting-time/Index.vue";
+import Service from "@/components/pages/service/Index.vue";
 import Register from "@/components/auth/Register.vue";
 
 export default createRouter({
