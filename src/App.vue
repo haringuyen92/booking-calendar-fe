@@ -1,9 +1,5 @@
 <template>
-  <Sidebar />
-  <div class="h__left">
-    <Navbar/>
-    <Warning />
-  </div>
+  <router-view></router-view>
 </template>
 
 <script>
@@ -14,8 +10,11 @@
   export default {
     name: 'App',
     components: {
+      // eslint-disable-next-line vue/no-unused-components
       Sidebar,
+      // eslint-disable-next-line vue/no-unused-components
       Warning,
+      // eslint-disable-next-line vue/no-unused-components
       Navbar,
     }
   }
