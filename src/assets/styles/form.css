@@ -1,0 +1,27 @@
+.h_container_fullscreen {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+.h__form_container{
+    margin: 20% auto;
+    max-width: 500px;
+    padding: 15px;
+    border: 1px solid #a2f2f5;
+    border-radius: 5px;
+}
+.h__form_login{
+    margin: 20px auto 0;
+    max-width: 320px;
+}
+.h__form_group{
+    margin-bottom: 20px;
+}
+.h__form_control:focus{
+    box-shadow: 0 0 0 0.15rem rgb(13 110 253 / 25%) !important;
+}
+.h__form_error{
+    font-size: 0.9em;
+}
