@@ -19,9 +19,19 @@
 .h__form_group{
     margin-bottom: 20px;
 }
-.h__form_control:focus{
-    box-shadow: 0 0 0 0.15rem rgb(13 110 253 / 25%) !important;
+.h__form_group .h__form_control:focus{
+    box-shadow: 0 0 0 0.1rem rgb(13 110 253 / 25%);
 }
 .h__form_error{
     font-size: 0.9em;
+}
+.h__form_invalid label{
+    color: red;
+}
+.h__form_invalid input{
+    border-color: red;
+}
+.h__form_invalid input:focus{
+    box-shadow: 0 0 0 0.05rem red !important;
+    border-color: red;
 }
