@@ -5,5 +5,8 @@ export default {
     },
     PASSWORD: {
         INVALID_LENGTH: 'mat khau tu 6-12 ky tu',
+    },
+    RE_PASSWORD: {
+        INVALID: 'mat khau chua khop'
     }
 }
