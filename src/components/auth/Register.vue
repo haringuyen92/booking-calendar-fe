@@ -37,7 +37,9 @@
           <button type="submit" class="btn btn-primary h__btn_flat">Register</button>
         </div>
       </form>
-
+      <div class="text-center h__form_footer">
+        <router-link to="/login">dang nhap</router-link>
+      </div>
     </div>
   </div>
 </template>

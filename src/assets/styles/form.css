@@ -7,14 +7,14 @@
 }
 .h__form_container{
     margin: 20% auto;
-    max-width: 500px;
+    max-width: 400px;
     padding: 15px;
     border: 1px solid #a2f2f5;
     border-radius: 5px;
 }
 .h__form_login{
     margin: 20px auto 0;
-    max-width: 320px;
+    max-width: 280px;
 }
 .h__form_group{
     margin-bottom: 20px;
@@ -34,4 +34,7 @@
 .h__form_invalid input:focus{
     box-shadow: 0 0 0 0.05rem red !important;
     border-color: red;
+}
+.h__form_footer{
+    margin-top: 10px;
 }

@@ -28,6 +28,9 @@
           <button type="submit" class="btn btn-primary h__btn_flat">Login</button>
         </div>
       </form>
+      <div class="text-center h__form_footer">
+        <router-link to="/register">dang ky tai khoan</router-link>
+      </div>
     </div>
   </div>
 </template>
@@ -90,5 +93,5 @@
 </script>
 
 <style scoped>
-  @import "../../assets/styles/form.css";
+  @import "@/assets/styles/form.css";
 </style>
