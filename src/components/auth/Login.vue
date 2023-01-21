@@ -60,7 +60,7 @@
         if(!this.validateEmail()) return false;
         if(!this.validatePassword()) return false;
         alert("submit login success"); // handle login api
-        this.$router.push({ name: 'Home' })
+        this.$router.push({ name: 'dashboard' })
       },
       validateEmail(){
         if(EmailValidation.invalid(this.email)) return true;

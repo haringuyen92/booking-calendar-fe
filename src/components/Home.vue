@@ -1,4 +1,24 @@
 <template>
-  <div>Home</div>
-  <router-view></router-view>
+  <Sidebar />
+  <Header />
+  <div class="h__wrapper">
+    <router-view></router-view>
+  </div>
 </template>
+
+<script>
+  import Sidebar from '@/components/layouts/Sidebar.vue';
+  import Header from '@/components/layouts/Header.vue';
+
+  export default{
+    components: { Sidebar, Header },
+  }
+</script>
+
+<style>
+  .h__wrapper{
+    margin-left: 250px;
+    padding: 15px;
+  }
+</style>
+

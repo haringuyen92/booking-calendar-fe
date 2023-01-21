@@ -10,6 +10,7 @@
 
 <script>
   export default {
+    name: 'Sidebar',
     data(){
       return {
         m_list: [

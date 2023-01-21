@@ -11,27 +11,32 @@ import Register from "@/components/auth/Register.vue";
 const routes = [
     {
         path: '/',
-        name: 'Home',
+        name: 'home',
         component: () => Home,
         children: [
             {
                 path: '/dashboard',
+                name: 'dashboard',
                 component: () => DashBoard
             },
             {
                 path: '/store',
+                name: 'store',
                 component: () => Store
             },
             {
                 path: '/service',
+                name: 'service',
                 component: () => Service
             },
             {
                 path: '/staff',
+                name: 'staff',
                 component: () => Staff
             },
             {
                 path: '/setting-time',
+                name: 'setting_time',
                 component: () => SettingTime
             }
         ]
