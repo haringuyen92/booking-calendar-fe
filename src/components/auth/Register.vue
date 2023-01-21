@@ -4,6 +4,16 @@
       <FormHeader title="Register"></FormHeader>
       <form @submit.prevent="submitRegister">
         <div class="h__form_login">
+          <div class="h__form_group" :class="error.name ? 'h__form_invalid' : ''">
+            <label for="email">name:</label>
+            <input type="text"
+                   class="form-control h__form_control"
+                   v-model.trim="name"
+                   ref="name"
+                   @keydown="setMessageErrorName('')"
+                   placeholder="Hari Nguyen">
+            <span class="h__form_error text-danger">{{ error.name }}</span>
+          </div>
           <div class="h__form_group" :class="error.email ? 'h__form_invalid' : ''">
             <label for="email">email:</label>
             <input type="text"
@@ -45,10 +55,11 @@
 </template>
 
 <script>
-  import FormHeader from "@/components/ui/form/FormHeader";
-  import {EmailValidation} from "@/helper/validation/EmailValidation";
-  import Message from "@/common/message";
-  import {PasswordValidation} from "@/helper/validation/PasswordValidation";
+  import FormHeader from '@/components/ui/form/FormHeader.vue';
+  import { EmailValidation } from '@/helper/validation/EmailValidation';
+  import Message from '@/common/message';
+  import { PasswordValidation } from '@/helper/validation/PasswordValidation';
+  import { register } from '@/controller/auth';
 
   export default {
     components: {
@@ -56,24 +67,37 @@
     },
     data(){
       return {
+        name: '',
         email: '',
         password: '',
         rePassword: '',
         error: {
           email: '',
           password: '',
-          rePassword: ''
+          rePassword: '',
+          name: ''
         },
       }
     },
     methods: {
-      submitRegister(){
+      async submitRegister(){
         this.reSetMessageError();
+        if(!this.validateName()) return false;
         if(!this.validateEmail()) return false;
         if(!this.validatePassword()) return false;
         if(!this.validateRePassword()) return false;
-        alert("submit register success"); // handle register api
-
+        const result = await register(this.name, this.email, this.password);
+        if(result?.success){
+          this.$router.push({ name: 'Dashboard' });
+        }else{
+          this.setMessageErrorEmail('email duplicate');
+        }
+      },
+      validateName(){
+        if(this.name) return true;
+        this.$refs.name.focus();
+        this.setMessageErrorName(Message.STRING.INVALID);
+        return false;
       },
       validateEmail(){
         if(EmailValidation.invalid(this.email)) return true;
@@ -93,6 +117,9 @@
         this.setMessageErrorRePassword(Message.RE_PASSWORD.INVALID);
         return false;
       },
+      setMessageErrorName(message){
+        this.error.name = message;
+      },  
       setMessageErrorEmail(message){
         this.error.email = message;
       },
@@ -103,6 +130,7 @@
         this.error.rePassword = message;
       },
       reSetMessageError(){
+        this.setMessageErrorName('');
         this.setMessageErrorEmail('');
         this.setMessageErrorPassword('');
         this.setMessageErrorRePassword('');

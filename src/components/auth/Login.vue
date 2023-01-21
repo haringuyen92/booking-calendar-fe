@@ -10,7 +10,7 @@
                    class="form-control h__form_control"
                    v-model.trim="email"
                    ref="email"
-                   @keydown="setMessageErrorEmail('')"
+                   @keydown="reSetMessageError('')"
                    placeholder="example@gmail.com">
             <span class="h__form_error text-danger">{{ error.email }}</span>
           </div>
@@ -20,8 +20,9 @@
                    class="form-control h__form_control"
                    v-model.trim="password"
                    ref="password"
-                   @keydown="setMessageErrorPassword('')">
+                   @keydown="reSetMessageError('')">
             <span class="h__form_error text-danger">{{ error.password }}</span>
+            <span class="h__form_error text-danger">{{ error.response }}</span>
           </div>
         </div>
         <div class="text-center">
@@ -36,10 +37,12 @@
 </template>
 
 <script>
-  import FormHeader from '@/components/ui/form/FormHeader';
+  import FormHeader from '@/components/ui/form/FormHeader.vue';
   import Message from '@/common/message';
-  import { EmailValidation } from "@/helper/validation/EmailValidation";
-  import { PasswordValidation } from "@/helper/validation/PasswordValidation";
+  import { EmailValidation } from '@/helper/validation/EmailValidation';
+  import { PasswordValidation } from '@/helper/validation/PasswordValidation';
+  import { login } from '@/controller/auth';
+
   export default {
     components: {
       FormHeader: FormHeader
@@ -49,18 +52,24 @@
         error: {
           email: '',
           password: '',
+          response: ''
         },
         email: '',
         password: ''
       }
     },
     methods: {
-      submitLogin(){
+      async submitLogin(){
         this.reSetMessageError();
         if(!this.validateEmail()) return false;
         if(!this.validatePassword()) return false;
-        alert("submit login success"); // handle login api
-        this.$router.push({ name: 'dashboard' })
+        const result = await login(this.email, this.password);
+        if(result?.success){
+          this.$router.push({ name: 'Dashboard' });
+        }else{
+          this.setMessageErrorResponse('username or password invalid');
+        }
+
       },
       validateEmail(){
         if(EmailValidation.invalid(this.email)) return true;
@@ -80,10 +89,14 @@
       setMessageErrorPassword(message){
         this.error.password = message;
       },
+      setMessageErrorResponse(message){
+        this.error.response = message;
+      },
       reSetMessageError(){
         this.setMessageErrorEmail('');
         this.setMessageErrorPassword('');
-      }
+        this.setMessageErrorResponse('');
+      },
     },
     created() {
 

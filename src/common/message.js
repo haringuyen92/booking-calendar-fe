@@ -1,4 +1,7 @@
 export default {
+    STRING: {
+        INVALID: 'ten khong duoc de trong'
+    },
     EMAIL: {
         UNIQUE: 'email da ton tai',
         INVALID: 'email ko dung dinh dang'

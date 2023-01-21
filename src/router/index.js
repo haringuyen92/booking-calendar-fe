@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import PageNotFound from "@/components/PageNotFound";
 import Home from "@/components/Home.vue";
 import DashBoard from "@/components/dashboard/Index.vue";
 import Login from "@/components/auth/Login.vue";
@@ -11,32 +12,32 @@ import Register from "@/components/auth/Register.vue";
 const routes = [
     {
         path: '/',
-        name: 'home',
+        name: 'Home',
         component: () => Home,
         children: [
             {
                 path: '/dashboard',
-                name: 'dashboard',
+                name: 'Dashboard',
                 component: () => DashBoard
             },
             {
                 path: '/store',
-                name: 'store',
+                name: 'Store',
                 component: () => Store
             },
             {
                 path: '/service',
-                name: 'service',
+                name: 'Service',
                 component: () => Service
             },
             {
                 path: '/staff',
-                name: 'staff',
+                name: 'Staff',
                 component: () => Staff
             },
             {
                 path: '/setting-time',
-                name: 'setting_time',
+                name: 'SettingTime',
                 component: () => SettingTime
             }
         ]
@@ -50,6 +51,11 @@ const routes = [
         path: '/register',
         name: 'Register',
         component: () => Register
+    },
+    {
+        path: '/:pathMatch(.*)*',
+        name: 'PageNotFound',
+        component: () => PageNotFound
     }
 ]
 export default createRouter({
