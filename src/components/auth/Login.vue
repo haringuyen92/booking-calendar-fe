@@ -8,9 +8,9 @@
             <label for="email">email:</label>
             <input type="text"
                    class="form-control h__form_control"
-                   v-model.trim="email"
+                   v-model.trim="formData.email"
                    ref="email"
-                   @keydown="reSetMessageError('')"
+                   @keydown="reSetMessageError()"
                    placeholder="example@gmail.com">
             <span class="h__form_error text-danger">{{ error.email }}</span>
           </div>
@@ -18,9 +18,9 @@
             <label for="email">password:</label>
             <input type="password"
                    class="form-control h__form_control"
-                   v-model.trim="password"
+                   v-model.trim="formData.password"
                    ref="password"
-                   @keydown="reSetMessageError('')">
+                   @keydown="reSetMessageError()">
             <span class="h__form_error text-danger">{{ error.password }}</span>
             <span class="h__form_error text-danger">{{ error.response }}</span>
           </div>
@@ -30,78 +30,71 @@
         </div>
       </form>
       <div class="text-center h__form_footer">
-        <router-link to="/register">dang ky tai khoan</router-link>
+        <router-link to="/register">Register</router-link>
       </div>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
+  import { ref,reactive } from 'vue';
+  import { useRouter } from "vue-router";
   import FormHeader from '@/components/ui/form/FormHeader.vue';
   import Message from '@/common/message';
   import { EmailValidation } from '@/helper/validation/EmailValidation';
   import { PasswordValidation } from '@/helper/validation/PasswordValidation';
   import { login } from '@/controller/auth';
 
-  export default {
-    components: {
-      FormHeader: FormHeader
-    },
-    data() {
-      return {
-        error: {
-          email: '',
-          password: '',
-          response: ''
-        },
-        email: '',
-        password: ''
-      }
-    },
-    methods: {
-      async submitLogin(){
-        this.reSetMessageError();
-        if(!this.validateEmail()) return false;
-        if(!this.validatePassword()) return false;
-        const result = await login(this.email, this.password);
-        if(result?.success){
-          this.$router.push({ name: 'Dashboard' });
-        }else{
-          this.setMessageErrorResponse('username or password invalid');
-        }
+  const router = useRouter();
+  const error = reactive({
+    email: '',
+    password: '',
+    response: ''
+  });
+  const formData = reactive({
+    email: '',
+    password: '',
+  })
+  const email = ref(null);
+  const password = ref(null);
 
-      },
-      validateEmail(){
-        if(EmailValidation.invalid(this.email)) return true;
-        this.$refs.email.focus();
-        this.setMessageErrorEmail(Message.EMAIL.INVALID);
-        return false;
-      },
-      validatePassword(){
-        if(PasswordValidation.invalidLength(this.password)) return true;
-        this.$refs.password.focus();
-        this.setMessageErrorPassword(Message.PASSWORD.INVALID_LENGTH);
-        return false;
-      },
-      setMessageErrorEmail(message){
-        this.error.email = message;
-      },
-      setMessageErrorPassword(message){
-        this.error.password = message;
-      },
-      setMessageErrorResponse(message){
-        this.error.response = message;
-      },
-      reSetMessageError(){
-        this.setMessageErrorEmail('');
-        this.setMessageErrorPassword('');
-        this.setMessageErrorResponse('');
-      },
-    },
-    created() {
+  const setMessageErrorEmail = message => {
+    error.email = message;
+  }
+  const setMessageErrorPassword = message => {
+    error.password = message;
+  }
+  const setMessageErrorResponse = message => {
+    error.response = message;
+  }
+  const reSetMessageError = () =>{
+    setMessageErrorEmail('');
+    setMessageErrorPassword('');
+    setMessageErrorResponse('');
+  }
+  const validateEmail = () => {
+    if(EmailValidation.invalid(formData.email)) return true;
+    email.value.focus();
+    setMessageErrorEmail(Message.EMAIL.INVALID);
+    return false;
+  }
+  const validatePassword = () => {
+    if(PasswordValidation.invalidLength(formData.password)) return true;
+    password.value.focus();
+    setMessageErrorPassword(Message.PASSWORD.INVALID_LENGTH);
+    return false;
+  }
 
+  const submitLogin = async () => {
+    reSetMessageError();
+    if(!validateEmail()) return false;
+    if(!validatePassword()) return false;
+    const result = await login(formData.email, formData.password);
+    if(result?.success){
+      await router.push({name: 'Dashboard'});
+    }else{
+      setMessageErrorResponse('Credentials Invalid!');
     }
-
   }
 </script>
 
