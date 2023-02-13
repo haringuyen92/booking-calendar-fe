@@ -48,7 +48,7 @@
         </div>
       </form>
       <div class="text-center h__form_footer">
-        <router-link to="/login">dang nhap</router-link>
+        <router-link to="/login">Login</router-link>
       </div>
     </div>
   </div>
@@ -137,7 +137,7 @@
     if(!validateEmail()) return false;
     if(!validatePassword()) return false;
     if(!validateRePassword()) return false;
-    const result = await register(this.name, this.email, this.password);
+    const result = await register(formData.name, formData.email, formData.password);
     if(result?.success){
       await router.push({name: 'Dashboard'});
     }else{
