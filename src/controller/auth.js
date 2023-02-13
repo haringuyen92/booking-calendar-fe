@@ -3,8 +3,7 @@ import httpClient from "./httpClient";
 export const login = async (email, password) => {
     console.log("start login");
     try{
-        const result = await httpClient.post('/auth/login', {email, password});
-        return result;
+        return await httpClient.post('/auth/login', {email, password});
     }catch(err){
         console.log(err);
     }
