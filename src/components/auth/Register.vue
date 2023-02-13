@@ -8,7 +8,7 @@
             <label for="email">name:</label>
             <input type="text"
                    class="form-control h__form_control"
-                   v-model.trim="name"
+                   v-model.trim="formData.name"
                    ref="name"
                    @keydown="setMessageErrorName('')"
                    placeholder="Hari Nguyen">
@@ -18,7 +18,7 @@
             <label for="email">email:</label>
             <input type="text"
                    class="form-control h__form_control"
-                   v-model.trim="email"
+                   v-model.trim="formData.email"
                    ref="email"
                    @keydown="setMessageErrorEmail('')"
                    placeholder="example@gmail.com">
@@ -28,7 +28,7 @@
             <label for="email">password:</label>
             <input type="password"
                    class="form-control h__form_control"
-                   v-model.trim="password"
+                   v-model.trim="formData.password"
                    ref="password"
                    @keydown="setMessageErrorPassword('')">
             <span class="h__form_error text-danger">{{ error.password }}</span>
@@ -37,7 +37,7 @@
             <label for="email">rePassword:</label>
             <input type="password"
                    class="form-control h__form_control"
-                   v-model.trim="rePassword"
+                   v-model.trim="formData.rePassword"
                    ref="rePassword"
                    @keydown="setMessageErrorRePassword('')">
             <span class="h__form_error text-danger">{{ error.rePassword }}</span>
@@ -54,87 +54,94 @@
   </div>
 </template>
 
-<script>
+<script setup>
+  import { ref, reactive } from "vue";
+  import { useRouter } from "vue-router";
   import FormHeader from '@/components/ui/form/FormHeader.vue';
   import { EmailValidation } from '@/helper/validation/EmailValidation';
-  import Message from '@/common/message';
   import { PasswordValidation } from '@/helper/validation/PasswordValidation';
   import { register } from '@/controller/auth';
+  import Message from "@/common/message";
 
-  export default {
-    components: {
-      FormHeader: FormHeader
-    },
-    data(){
-      return {
-        name: '',
-        email: '',
-        password: '',
-        rePassword: '',
-        error: {
-          email: '',
-          password: '',
-          rePassword: '',
-          name: ''
-        },
-      }
-    },
-    methods: {
-      async submitRegister(){
-        this.reSetMessageError();
-        if(!this.validateName()) return false;
-        if(!this.validateEmail()) return false;
-        if(!this.validatePassword()) return false;
-        if(!this.validateRePassword()) return false;
-        const result = await register(this.name, this.email, this.password);
-        if(result?.success){
-          this.$router.push({ name: 'Dashboard' });
-        }else{
-          this.setMessageErrorEmail('email duplicate');
-        }
-      },
-      validateName(){
-        if(this.name) return true;
-        this.$refs.name.focus();
-        this.setMessageErrorName(Message.STRING.INVALID);
-        return false;
-      },
-      validateEmail(){
-        if(EmailValidation.invalid(this.email)) return true;
-        this.$refs.email.focus();
-        this.setMessageErrorEmail(Message.EMAIL.INVALID);
-        return false;
-      },
-      validatePassword(){
-        if(PasswordValidation.invalidLength(this.password)) return true;
-        this.$refs.password.focus();
-        this.setMessageErrorPassword(Message.PASSWORD.INVALID_LENGTH);
-        return false;
-      },
-      validateRePassword(){
-        if(this.password === this.rePassword) return true;
-        this.$refs.rePassword.focus();
-        this.setMessageErrorRePassword(Message.RE_PASSWORD.INVALID);
-        return false;
-      },
-      setMessageErrorName(message){
-        this.error.name = message;
-      },  
-      setMessageErrorEmail(message){
-        this.error.email = message;
-      },
-      setMessageErrorPassword(message){
-        this.error.password = message;
-      },
-      setMessageErrorRePassword(message){
-        this.error.rePassword = message;
-      },
-      reSetMessageError(){
-        this.setMessageErrorName('');
-        this.setMessageErrorEmail('');
-        this.setMessageErrorPassword('');
-        this.setMessageErrorRePassword('');
-      }
-    },
+  const router = useRouter();
+
+  const error = reactive({
+    email: '',
+    password: '',
+    rePassword: '',
+    name: ''
+  });
+  const formData = reactive({
+    name: '',
+    email: '',
+    password: '',
+    rePassword: ''
+  });
+
+  const name = ref(null);
+  const email = ref(null);
+  const password = ref(null);
+  const rePassword = ref(null);
+
+  const setMessageErrorName = message => {
+    error.name = message;
+  }
+  const setMessageErrorEmail = message => {
+    error.email = message;
+  }
+  const setMessageErrorPassword = message => {
+    error.password = message;
+  }
+
+  const setMessageErrorRePassword = message => {
+    error.rePassword = message;
+  }
+  const setMessageErrorResponse = message => {
+    error.response = message;
+  }
+  const reSetMessageError = () =>{
+    setMessageErrorName('');
+    setMessageErrorEmail('');
+    setMessageErrorPassword('');
+    setMessageErrorResponse('');
+  }
+
+  const validateName = () => {
+    if(formData.name) return true;
+    name.value.focus();
+    setMessageErrorName(`name ${Message.STRING.INVALID}`);
+    return false;
+  }
+  const validateEmail = () => {
+    if(EmailValidation.invalid(formData.email)) return true;
+    email.value.focus();
+    setMessageErrorEmail(Message.EMAIL.INVALID);
+    return false;
+  }
+  const validatePassword = () => {
+    if(PasswordValidation.invalidLength(formData.password)) return true;
+    password.value.focus();
+    setMessageErrorPassword(Message.PASSWORD.INVALID_LENGTH);
+    return false;
+  }
+
+  const validateRePassword = () => {
+    if(formData.password === formData.rePassword) return true;
+    rePassword.value.focus();
+    setMessageErrorRePassword(Message.RE_PASSWORD.INVALID);
+    return false;
+  }
+  const submitRegister = async () => {
+    reSetMessageError();
+    if(!validateName()) return false;
+    if(!validateEmail()) return false;
+    if(!validatePassword()) return false;
+    if(!validateRePassword()) return false;
+    const result = await register(this.name, this.email, this.password);
+    if(result?.success){
+      await router.push({name: 'Dashboard'});
+    }else{
+      setMessageErrorEmail('email duplicate');
+    }
   }
 </script>

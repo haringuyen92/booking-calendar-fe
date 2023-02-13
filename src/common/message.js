@@ -1,6 +1,6 @@
 export default {
     STRING: {
-        INVALID: 'ten khong duoc de trong'
+        INVALID: 'cannot be left blank'
     },
     EMAIL: {
         UNIQUE: 'email da ton tai',
