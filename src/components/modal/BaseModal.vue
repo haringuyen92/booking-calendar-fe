@@ -1,31 +1,38 @@
 <template>
-  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="staticBackdropLabel">{{ title }}</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div>{{ message }}</div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
-        </div>
-      </div>
+  <div class="modal is-active">
+    <div class="h__md_background modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <span class="modal-card-title">{{ title }}</span>
+        <button class="delete" aria-label="close" @click="closeModal"></button>
+      </header>
+      <section class="modal-card-body">
+        <slot name="main"/>
+      </section>
+      <footer class="modal-card-foot justify-content-end">
+        <button type="button" class="button is-danger" @click="closeModal">Cancel</button>
+        <slot name="action" />
+      </footer>
     </div>
   </div>
 </template>
 
-<script>
-  export default {
-    props: {
-      title: String,
-      message: String
+<script setup>
+  import {defineProps, toRefs, defineEmits} from "vue";
+
+  const props = defineProps({
+    status: {
+      type: Boolean,
+      default: false
     },
-    data(){
-      return {
-      }
+    title: {
+      type: String,
+      default: 'Title'
     }
-  }
+  })
+
+  const emit = defineEmits(['onCloseModal']);
+  const closeModal = () => emit('onCloseModal');
+
+  const {title} = toRefs(props);
 </script>

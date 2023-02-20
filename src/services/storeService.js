@@ -8,6 +8,13 @@ class StoreService{
             new Error(e);
         }
     }
+    async create(data){
+        try {
+            return await httpClient.post('/stores',{data});
+        }catch (e){
+            new Error(e);
+        }
+    }
 }
 
 export default new StoreService();

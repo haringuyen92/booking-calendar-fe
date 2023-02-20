@@ -1,3 +1,6 @@
+textarea{
+    resize: none!important;
+}
 .h_container_fullscreen {
     position: absolute;
     top: 0;
@@ -37,4 +40,14 @@
 }
 .h__form_footer{
     margin-top: 10px;
+}
+.h__form_basic .h__form_group{
+    align-items: center;
+}
+.h__form_center{
+    width: 450px;
+    margin: 0 auto;
+}
+.h__md_background{
+    background: rgb(100 100 100 / 86%);
 }
