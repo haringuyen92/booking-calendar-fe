@@ -1,6 +1,6 @@
 import httpClient from "../httpClient";
 
-class Auth{
+class AuthService{
     async login(email, password){
         console.log("start login");
         try{
@@ -18,6 +18,6 @@ class Auth{
         }
     }
 }
-export default new Auth();
+export default new AuthService();
  
 

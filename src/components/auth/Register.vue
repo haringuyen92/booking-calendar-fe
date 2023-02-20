@@ -60,7 +60,7 @@
   import FormHeader from '@/components/ui/form/FormHeader.vue';
   import { EmailValidation } from '@/helper/validation/EmailValidation';
   import { PasswordValidation } from '@/helper/validation/PasswordValidation';
-  import Auth from '@/services/authService';
+  import AuthService from '@/services/authService';
   import Message from "@/common/message";
 
   const router = useRouter();
@@ -137,7 +137,7 @@
     if(!validateEmail()) return false;
     if(!validatePassword()) return false;
     if(!validateRePassword()) return false;
-    const result = await Auth.register(formData.name, formData.email, formData.password);
+    const result = await AuthService.register(formData.name, formData.email, formData.password);
     if(result?.success){
       await router.push({name: 'Dashboard'});
     }else{

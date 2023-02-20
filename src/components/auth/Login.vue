@@ -43,7 +43,7 @@
   import Message from '@/common/message';
   import { EmailValidation } from '@/helper/validation/EmailValidation';
   import { PasswordValidation } from '@/helper/validation/PasswordValidation';
-  import Auth from '@/services/authService';
+  import AuthService from '@/services/authService';
 
   const router = useRouter();
   const error = reactive({
@@ -89,7 +89,7 @@
     reSetMessageError();
     if(!validateEmail()) return false;
     if(!validatePassword()) return false;
-    const result = await Auth.login(formData.email, formData.password);
+    const result = await AuthService.login(formData.email, formData.password);
     if(result?.success){
       await router.push({name: 'Dashboard'});
     }else{
