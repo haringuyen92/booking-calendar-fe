@@ -13,6 +13,7 @@
     "bootstrap": "^5.2.3",
     "bulma": "^0.9.4",
     "core-js": "^3.8.3",
+    "pinia": "^2.0.31",
     "vue": "^3.2.13",
     "vue-loading-overlay": "6.0",
     "vue-router": "^4.1.6"

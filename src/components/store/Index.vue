@@ -25,6 +25,15 @@
                 </div>
               </div>
               <div class="h__form_group row">
+                <label class="col-3" for="address">Address:</label>
+                <div class="col-9">
+                  <input type="text"
+                         class="form-control h__form_control"
+                         v-model.trim="formData.address"
+                         ref="address">
+                </div>
+              </div>
+              <div class="h__form_group row">
                 <label class="col-3" for="image">Image:</label>
                 <div class="col-9">
                   <input type="text"
@@ -108,7 +117,7 @@
   }
 
   const createStore = async () => {
-    const res = await StoreService.create(formData);
+    const res = await StoreService.create({...formData});
     console.log(res);
   }
 
