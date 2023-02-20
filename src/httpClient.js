@@ -2,12 +2,12 @@ import axios from "axios";
 import {useLoading} from 'vue-loading-overlay'
 
 const $loading = useLoading();
-var loader;
-
+let loader;
+let token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzZTlkNTMzZTRkZjlhMjgzNDg4N2JhOCIsImlhdCI6MTY3Njg4ODA4OSwiZXhwIjoxNjc5NDgwMDg5fQ.CUmC6O1aXz8APvDAqgC1ekOl8BklABVvBfnPMhFaRiM`;
 const httpClient = axios.create({
     baseURL: `http://localhost:3000/api`,
     headers: {
-        Authorization: 'Bearer {token}'
+        Authorization: `Bearer ${token}`
     }
 });
 httpClient.interceptors.request.use(function (config) {
