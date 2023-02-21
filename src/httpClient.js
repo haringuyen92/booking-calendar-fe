@@ -1,14 +1,14 @@
 import axios from "axios";
 import {useLoading} from 'vue-loading-overlay';
+import {authHeader} from "@/helpers/auth-header";
 
 const $loading = useLoading();
 let loader;
-console.log("httpClient");
 const httpClient = axios.create({
     baseURL: `http://localhost:3000/api`,
     withCredentials: true,
     headers: {
-        Authorization: `Bearer {accessToken}`
+        ...authHeader()
     }
 });
 httpClient.interceptors.request.use(function (config) {

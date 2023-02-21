@@ -1,9 +1,10 @@
 import httpClient from "../httpClient";
 
 class StoreService{
-    async getAll(){
+    async getAll(userId = ''){
         try {
-            return await httpClient.get('/users/stores');
+            if(userId) return await httpClient.get(`/users/${userId}/stores`);
+            return await httpClient.get(`/stores`);
         }catch (e){
             new Error(e);
         }

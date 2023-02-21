@@ -87,6 +87,7 @@
   import StoreService from "@/services/storeService";
   import BaseDataTable from "@/components/table/BaseDataTable.vue";
   import BaseModal from "@/components/modal/BaseModal.vue";
+  import {useAuthStore} from "@/stores/authStore";
   const dataTable = reactive({
     columns: ['name', 'description', 'address', 'phone'],
     rows: [],
@@ -106,8 +107,12 @@
     address: '',
   })
   const getListStore = async () => {
-    const res = await StoreService.getAll();
-    dataTable.rows = [...res.data];
+    const { user } = useAuthStore();
+    const { id } = user;
+    const res = await StoreService.getAll(id);
+    if(res?.success){
+      dataTable.rows = [...res.data];
+    }
   }
   const showModal = () => {
     modal.status = true;

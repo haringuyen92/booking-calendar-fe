@@ -93,7 +93,7 @@
     if(!validatePassword()) return false;
     const result = await AuthService.login(formData.email, formData.password);
     if(result?.success){
-      storeAuth.setAccessToken(result.token);
+      storeAuth.setUser(result.user);
       await router.push({name: 'Dashboard'});
     }else{
       setMessageErrorResponse('Credentials Invalid!');
