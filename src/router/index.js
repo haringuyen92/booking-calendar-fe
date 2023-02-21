@@ -58,7 +58,17 @@ const routes = [
         component: () => PageNotFound
     }
 ]
-export default createRouter({
+console.log("router")
+export const router = createRouter({
     history: createWebHistory(),
     routes: routes
+})
+router.beforeEach((to, from, next) => {
+    const publicPages = ['/login', '/register'];
+    const authRequired = !publicPages.includes(to.path);
+    const accessToken = localStorage.getItem('accessToken');
+    if (authRequired && !accessToken) {
+        return next('/login');
+    }
+    next();
 })

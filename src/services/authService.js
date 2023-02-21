@@ -2,7 +2,6 @@ import httpClient from "../httpClient";
 
 class AuthService{
     async login(email, password){
-        console.log("start login");
         try{
             return await httpClient.post('/auth/login', {email, password});
         }catch(err){

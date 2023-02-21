@@ -44,7 +44,9 @@
   import { EmailValidation } from '@/helper/validation/EmailValidation';
   import { PasswordValidation } from '@/helper/validation/PasswordValidation';
   import AuthService from '@/services/authService';
+  import { useAuthStore } from "@/stores/authStore";
 
+  const storeAuth = useAuthStore();
   const router = useRouter();
   const error = reactive({
     email: '',
@@ -91,6 +93,7 @@
     if(!validatePassword()) return false;
     const result = await AuthService.login(formData.email, formData.password);
     if(result?.success){
+      storeAuth.setAccessToken(result.token);
       await router.push({name: 'Dashboard'});
     }else{
       setMessageErrorResponse('Credentials Invalid!');
