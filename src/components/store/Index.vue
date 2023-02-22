@@ -88,6 +88,7 @@
   import BaseDataTable from "@/components/table/BaseDataTable.vue";
   import BaseModal from "@/components/modal/BaseModal.vue";
   import {useAuthStore} from "@/stores/authStore";
+
   const dataTable = reactive({
     columns: ['name', 'description', 'address', 'phone'],
     rows: [],
@@ -105,10 +106,12 @@
     phone: '',
     email: '',
     address: '',
-  })
+  });
+
+  const { user } = useAuthStore();
+  const { id } = user;
   const getListStore = async () => {
-    const { user } = useAuthStore();
-    const { id } = user;
+
     const res = await StoreService.getAll(id);
     if(res?.success){
       dataTable.rows = [...res.data];
@@ -122,7 +125,7 @@
   }
 
   const createStore = async () => {
-    const res = await StoreService.create({...formData});
+    const res = await StoreService.create(id, {...formData});
     console.log(res);
   }
 

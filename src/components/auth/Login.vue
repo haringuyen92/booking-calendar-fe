@@ -43,7 +43,6 @@
   import Message from '@/common/message';
   import { EmailValidation } from '@/helper/validation/EmailValidation';
   import { PasswordValidation } from '@/helper/validation/PasswordValidation';
-  import AuthService from '@/services/authService';
   import { useAuthStore } from "@/stores/authStore";
 
   const storeAuth = useAuthStore();
@@ -91,12 +90,11 @@
     reSetMessageError();
     if(!validateEmail()) return false;
     if(!validatePassword()) return false;
-    const result = await AuthService.login(formData.email, formData.password);
-    if(result?.success){
-      storeAuth.setUser(result.user);
-      await router.push({name: 'Dashboard'});
-    }else{
+    const result = await storeAuth.login(formData.email, formData.password);
+    if(!result?.success){
       setMessageErrorResponse('Credentials Invalid!');
+    }else{
+      await router.push(storeAuth.returnUrl);
     }
   }
 </script>

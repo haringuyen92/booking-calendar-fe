@@ -8,6 +8,8 @@ import Staff from "@/components/staff/Index.vue";
 import SettingTime from "@/components/setting-time/Index.vue";
 import Service from "@/components/service/Index.vue";
 import Register from "@/components/auth/Register.vue";
+import { useAlertStore } from "@/stores/alertStore";
+import { useAuthStore } from "@/stores/authStore";
 
 const routes = [
     {
@@ -61,13 +63,18 @@ const routes = [
 console.log("router")
 export const router = createRouter({
     history: createWebHistory(),
+    // linkActiveClass: 'active',
     routes: routes
 })
 router.beforeEach((to, from, next) => {
+    const alertStore = useAlertStore();
+    alertStore.clear();
     const publicPages = ['/login', '/register'];
     const authRequired = !publicPages.includes(to.path);
-    const accessToken = localStorage.getItem('accessToken');
-    if (authRequired && !accessToken) {
+
+    const authStore = useAuthStore();
+    if (authRequired && !authStore.user) {
+        authStore.returnUrl = to.fullPath;
         return next('/login');
     }
     next();
