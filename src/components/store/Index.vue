@@ -88,6 +88,7 @@
   import BaseDataTable from "@/components/table/BaseDataTable.vue";
   import BaseModal from "@/components/modal/BaseModal.vue";
   import {useAuthStore} from "@/stores/authStore";
+  import {useAlertStore} from "@/stores/alertStore";
 
   const dataTable = reactive({
     columns: ['name', 'description', 'address', 'phone'],
@@ -126,7 +127,10 @@
 
   const createStore = async () => {
     const res = await StoreService.create(id, {...formData});
-    console.log(res);
+    if(typeof res === 'string'){
+      const alertStore = useAlertStore();
+      alertStore.error(res);
+    }
   }
 
   getListStore();

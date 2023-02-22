@@ -6,14 +6,14 @@ class StoreService{
             if(userId) return await httpClient.get(`/users/${userId}/stores`);
             return await httpClient.get(`/stores`);
         }catch (e){
-            new Error(e);
+            return e.message;
         }
     }
     async create(userId, data){
         try {
             return await httpClient.post(`/users/${userId}/stores`,data);
         }catch (e){
-            new Error(e);
+            return e.message;
         }
     }
 }

@@ -1,11 +1,11 @@
 <template>
+  <BaseAlert />
   <router-view></router-view>
 </template>
 
-<script>
-  export default {
-    name: 'App',
-  }
+<script setup>
+import BaseAlert from "@/components/alert/BaseAlert.vue";
+
 </script>
 
 <style>
@@ -26,5 +26,13 @@
   }
   .h__left{
     margin-left: 250px;
+  }
+  .h__sidebar_menu_item:hover .nav-link{
+    background-color: rgba(255,255,255,.1);
+  }
+  .router-link-active{
+    background-color: #007bff;
+    color: #fff;
+    box-shadow: 0 1px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%);
   }
 </style>
