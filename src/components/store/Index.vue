@@ -1,8 +1,8 @@
 <template>
   <div ref="el">
     <div>
-      <button type="button" class="btn btn-primary" @click="showModal()">New Store</button>
-      <BaseModal v-model="modal.status" v-if="modal.status" @onCloseModal="closeModal" :title="modal.title">
+      <button type="button" class="btn btn-primary" @click="openModalCreateStore">New Store</button>
+      <BaseModal v-model="modal.status" v-if="modal.status" @onCloseModal="closeModal" :title="getTitle">
         <template v-slot:main>
           <div class="h__form_center">
             <div class="h__form_basic">
@@ -73,33 +73,37 @@
           </div>
         </template>
         <template v-slot:action>
-          <button class="button is-success" @click="createStore">Save changes</button>
+          <button class="button is-success" v-if="modal.event === 'create'"
+                  @click="createStore">Create</button>
+          <button class="button is-success" v-if="modal.event === 'update'"
+                  @click="updateStore">Update</button>
         </template>
       </BaseModal>
     </div>
     <Suspense>
-      <BaseDataTable :columns="dataTable.columns" :rows="dataTable.rows" />
+      <BaseDataTable :columns="dataTable.columns" :rows="dataTable.rows" @onGetItem="getStore" />
     </Suspense>
   </div>
 </template>
 <script setup>
-  import {reactive} from 'vue';
+import {computed, reactive} from 'vue';
   import StoreService from "@/services/storeService";
   import BaseDataTable from "@/components/table/BaseDataTable.vue";
   import BaseModal from "@/components/modal/BaseModal.vue";
   import {useAuthStore} from "@/stores/authStore";
   import {useAlertStore} from "@/stores/alertStore";
 
+  const alertStore = useAlertStore();
   const dataTable = reactive({
     columns: ['name', 'description', 'address', 'phone'],
     rows: [],
   });
   const modal = reactive({
     status: false,
-    title: 'Create Store'
-
+    event: 'create'
   });
   const formData = reactive({
+    id: '',
     name: '',
     image: '',
     description: '',
@@ -112,28 +116,61 @@
   const { user } = useAuthStore();
   const { id } = user;
   const getListStore = async () => {
-
     const res = await StoreService.getAll(id);
     if(res?.success){
       dataTable.rows = [...res.data];
     }
   }
-  const showModal = () => {
-    modal.status = true;
+  const showModal = () => modal.status = true;
+  const closeModal = () => modal.status = false;
+  const openModalCreateStore = () => {
+    formData.id = '';
+    formData.name = '';
+    formData.image = '';
+    formData.description = '';
+    formData.website = '';
+    formData.phone = '';
+    formData.email = '';
+    formData.address = '';
+    modal.event = 'create';
+    showModal();
   }
-  const closeModal = () => {
-    modal.status = false;
+  const getTitle = computed(() => modal.event === 'create' ? 'Create Store' : 'Update Store');
+  const getStore = async (storeId) => {
+    const res = await StoreService.get(id, storeId);
+    if(typeof res === 'string'){
+      alertStore.error(res);
+    }else{
+      const { data } = res;
+      formData.id = data.id;
+      formData.name = data.name;
+      formData.image = data.image;
+      formData.description = data.description;
+      formData.website = data.website;
+      formData.phone = data.phone;
+      formData.email = data.email;
+      formData.address = data.address;
+      modal.event = 'update';
+      showModal();
+    }
   }
-
   const createStore = async () => {
     const res = await StoreService.create(id, {...formData});
     if(typeof res === 'string'){
-      const alertStore = useAlertStore();
+      // handler error
       alertStore.error(res);
     }else {
       closeModal();
     }
   }
-
+  const updateStore = async () => {
+    const res = await StoreService.update(id, formData.id, formData);
+    if(typeof res === 'string'){
+      // handler error
+      alertStore.error(res);
+    }else {
+      closeModal();
+    }
+  }
   getListStore();
 </script>

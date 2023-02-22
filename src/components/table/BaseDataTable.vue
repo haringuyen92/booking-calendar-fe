@@ -6,8 +6,8 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="row in rows" :key="row.id">
-        <td v-for="column in columns" :key="column">
+      <tr v-for="row in rows" :key="row.id" @click="getItem(row.id)">
+        <td v-for="(column, c_key) in columns" :key="c_key">
           {{ row[column] }}
         </td>
       </tr>
@@ -16,8 +16,9 @@
 </template>
 
 <script setup>
-import {defineProps, toRefs} from "vue";
+import {defineProps, defineEmits, toRefs} from "vue";
 
+  const emit = defineEmits(['onGetItem'])
   const props = defineProps({
     columns: {
       type: Array,
@@ -29,4 +30,6 @@ import {defineProps, toRefs} from "vue";
     }
   });
   const { columns, rows } = toRefs(props);
+
+  const getItem = id => emit('onGetItem', id);
 </script>
