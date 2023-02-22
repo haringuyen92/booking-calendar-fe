@@ -130,6 +130,8 @@
     if(typeof res === 'string'){
       const alertStore = useAlertStore();
       alertStore.error(res);
+    }else {
+      closeModal();
     }
   }
 

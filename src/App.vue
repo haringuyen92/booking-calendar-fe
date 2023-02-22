@@ -1,5 +1,5 @@
 <template>
-  <BaseAlert />
+  <BaseAlert/>
   <router-view></router-view>
 </template>
 

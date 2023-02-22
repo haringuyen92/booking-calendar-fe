@@ -6,10 +6,18 @@ export const useAlertStore = defineStore('alert',{
     }),
     actions: {
         success(message) {
+            let self = this;
             this.alert = { message, type: 'alert-success' };
+            setTimeout(() => {
+                self.alert = null;
+            }, 2000);
         },
-        error(message){
+        error(message) {
+            let self = this;
             this.alert = { message, type: 'alert-danger' };
+            setTimeout(() => {
+                self.alert = null;
+            }, 2000);
         },
         clear() {
             this.alert = null;
