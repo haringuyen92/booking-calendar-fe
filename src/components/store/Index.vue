@@ -167,6 +167,7 @@ import {computed, reactive, toRefs, watch} from 'vue';
     }else {
       alertStore.success(res.message);
       closeModal();
+      await getListStore();
     }
   }
   const updateStore = async () => {
@@ -177,6 +178,7 @@ import {computed, reactive, toRefs, watch} from 'vue';
     }else {
       alertStore.success(res.message);
       closeModal();
+      await getListStore();
     }
   }
   const confirmDeleteStore = id => {
@@ -192,6 +194,7 @@ import {computed, reactive, toRefs, watch} from 'vue';
     }else {
       alertStore.success(res.message);
       confirmModalStore.hide();
+      await getListStore();
     }
   }
   watch(isConfirm, () => {
