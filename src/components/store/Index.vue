@@ -83,8 +83,7 @@
       </BaseModal>
     </div>
     <Suspense>
-      <BaseDataTable :columns="dataTable.columns" :rows="dataTable.rows" @onGetItem="getStore"
-                     @onDeleteItem="confirmDeleteStore"/>
+      <BaseDataTable :columns="dataTable.columns" :rows="dataTable.rows" @onGetItem="getStore" @onDeleteItem="confirmDeleteStore"/>
     </Suspense>
   </div>
 </template>
