@@ -8,46 +8,41 @@
   </div>
 </template>
 
-<script>
-  export default {
-    name: 'Sidebar',
-    data(){
-      return {
-        m_list: [
-          {
-            position: 1,
-            name: 'dashboard',
-            text: 'Dashboard',
-            url: '/dashboard'
-          },
-          {
-            position: 2,
-            name: 'store',
-            text: 'Store',
-            url: '/store'
-          },
-          {
-            position: 3,
-            name: 'setting_time',
-            text: 'Setting Time',
-            url: '/setting-time'
-          },
-          {
-            position: 4,
-            name: 'dashboard',
-            text: 'Staff',
-            url: '/staff'
-          },
-          {
-            position: 5,
-            name: 'service',
-            text: 'Service',
-            url: '/service'
-          },
-        ]
-      }
-    }
-  }
+<script setup>
+import { reactive } from "vue";
+
+const m_list = reactive([
+  {
+    position: 1,
+    name: 'dashboard',
+    text: 'Dashboard',
+    url: '/dashboard'
+  },
+  {
+    position: 2,
+    name: 'store',
+    text: 'Store',
+    url: '/store'
+  },
+  {
+    position: 3,
+    name: 'setting_time',
+    text: 'Setting Time',
+    url: '/setting-time'
+  },
+  {
+    position: 4,
+    name: 'dashboard',
+    text: 'Staff',
+    url: '/staff'
+  },
+  {
+    position: 5,
+    name: 'service',
+    text: 'Service',
+    url: '/service'
+  },
+])
 </script>
 <style>
   .h__sidebar{
