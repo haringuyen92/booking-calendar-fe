@@ -81,18 +81,21 @@
       </BaseModal>
     </div>
     <Suspense>
-      <BaseDataTable :columns="dataTable.columns" :rows="dataTable.rows" @onGetItem="getStore" />
+      <BaseDataTable :columns="dataTable.columns" :rows="dataTable.rows" @onGetItem="getStore" @onDeleteItem="confirmDeleteStore" />
     </Suspense>
   </div>
 </template>
 <script setup>
-import {computed, reactive} from 'vue';
+import {computed, reactive, toRefs, watch} from 'vue';
   import StoreService from "@/services/storeService";
   import BaseDataTable from "@/components/table/BaseDataTable.vue";
   import BaseModal from "@/components/modal/BaseModal.vue";
   import {useAuthStore} from "@/stores/authStore";
   import {useAlertStore} from "@/stores/alertStore";
+  import {useConfirmModalStore} from "@/stores/confirmModalStore";
+  import { STORE_CONSTANT } from '@/common/constant';
 
+  const confirmModalStore = useConfirmModalStore();
   const alertStore = useAlertStore();
   const dataTable = reactive({
     columns: ['name', 'description', 'address', 'phone'],
@@ -123,6 +126,8 @@ import {computed, reactive} from 'vue';
   }
   const showModal = () => modal.status = true;
   const closeModal = () => modal.status = false;
+
+  const { isConfirm, component } = toRefs(confirmModalStore);
   const openModalCreateStore = () => {
     formData.id = '';
     formData.name = '';
@@ -160,6 +165,7 @@ import {computed, reactive} from 'vue';
       // handler error
       alertStore.error(res);
     }else {
+      alertStore.success(res.message);
       closeModal();
     }
   }
@@ -169,8 +175,29 @@ import {computed, reactive} from 'vue';
       // handler error
       alertStore.error(res);
     }else {
+      alertStore.success(res.message);
       closeModal();
     }
   }
+  const confirmDeleteStore = id => {
+    confirmModalStore.show();
+    confirmModalStore.setId(id);
+    confirmModalStore.setComponentConfirm(STORE_CONSTANT);
+  }
+  const deleteStore = async () => {
+    const res = await StoreService.delete(id, confirmModalStore.id);
+    if(typeof res === 'string'){
+      // handler error
+      alertStore.error(res);
+    }else {
+      alertStore.success(res.message);
+      confirmModalStore.hide();
+    }
+  }
+  watch(isConfirm, () => {
+    if(component.value === STORE_CONSTANT){
+      deleteStore();
+    }
+  });
   getListStore();
 </script>

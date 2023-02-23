@@ -30,6 +30,13 @@ class StoreService{
             return e.message;
         }
     }
+    async delete(userId, storeId){
+        try {
+            return await httpClient.delete(`/users/${userId}/stores/${storeId}`);
+        }catch (e){
+            return e.message;
+        }
+    }
 }
 
 export default new StoreService();

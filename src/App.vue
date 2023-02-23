@@ -1,10 +1,12 @@
 <template>
   <BaseAlert/>
+  <ConfirmModal />
   <router-view></router-view>
 </template>
 
 <script setup>
 import BaseAlert from "@/components/alert/BaseAlert.vue";
+import ConfirmModal from "@/components/modal/ConfirmModal.vue";
 
 </script>
 
