@@ -48,6 +48,9 @@ textarea{
     width: 450px;
     margin: 0 auto;
 }
+.h__form_left{
+    width: 450px;
+}
 .h__md_background{
     background: rgb(100 100 100 / 86%);
 }

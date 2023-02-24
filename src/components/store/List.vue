@@ -90,8 +90,8 @@
 <script setup>
 import {computed, reactive, toRefs, watch} from 'vue';
 import StoreService from "@/services/storeService";
-import BaseDataTable from "@/components/table/BaseDataTable.vue";
-import BaseModal from "@/components/modal/BaseModal.vue";
+import BaseDataTable from "@/components/ui/table/BaseDataTable.vue";
+import BaseModal from "@/components/ui/modal/BaseModal.vue";
 import {useAuthStore} from "@/stores/authStore";
 import {useAlertStore} from "@/stores/alertStore";
 import {useConfirmModalStore} from "@/stores/confirmModalStore";

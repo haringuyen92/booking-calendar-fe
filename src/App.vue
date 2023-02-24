@@ -5,8 +5,8 @@
 </template>
 
 <script setup>
-import BaseAlert from "@/components/alert/BaseAlert.vue";
-import ConfirmModal from "@/components/modal/ConfirmModal.vue";
+import BaseAlert from "@/components/ui/alert/BaseAlert.vue";
+import ConfirmModal from "@/components/ui/modal/ConfirmModal.vue";
 
 </script>
 

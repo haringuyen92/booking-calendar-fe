@@ -23,7 +23,7 @@ const settingList = reactive([
     params: {storeId}
   },
   {
-    title: 'Course',
+    title: 'Service',
     name: 'store.service',
     params: {storeId}
   },
@@ -39,7 +39,7 @@ const settingList = reactive([
   margin-bottom: 15px;
   background: #08BF5A;
 }
-.router-link-exact-active,
+.router-link-active,
 .navbar-item:focus,
 .navbar-item:hover {
   background: #189F55;

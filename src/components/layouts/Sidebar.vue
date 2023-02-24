@@ -27,7 +27,7 @@ const m_list = reactive([
     position: 1,
     name: 'dashboard',
     text: 'Dashboard',
-    url: '/'
+    url: '/dashboard'
   },
   {
     position: 2,
@@ -80,7 +80,7 @@ const m_list = reactive([
   .h__sidebar_menu_item:hover .nav-link:not(.router-link-exact-active){
     background-color: rgba(255,255,255,.1);
   }
-  .router-link-exact-active{
+  .router-link-active{
     background-color: #007bff;
     color: #fff;
     box-shadow: 0 1px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%);

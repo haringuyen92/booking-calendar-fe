@@ -5,12 +5,14 @@ import DashBoard from "@/components/dashboard/Index.vue";
 import Login from "@/components/auth/Login.vue";
 import Store from "@/components/store/Index.vue";
 import Staff from "@/components/staff/Index.vue";
+import ListStaff from "@/components/staff/List.vue";
+import CreateStaff from "@/components/staff/Create.vue";
 import SettingTime from "@/components/setting-time/Index.vue";
 import Service from "@/components/service/Index.vue";
 import Register from "@/components/auth/Register.vue";
 import { useAlertStore } from "@/stores/alertStore";
 import { useAuthStore } from "@/stores/authStore";
-import List from "@/components/store/List.vue";
+import ListStore from "@/components/store/List.vue";
 import Setting from "@/components/store/Setting.vue";
 
 const routes = [
@@ -36,8 +38,19 @@ const routes = [
                             },
                             {
                                 path: ':storeId/staffs',
-                                name: 'store.staff',
-                                component: () => Staff
+                                component: () => Staff,
+                                children: [
+                                    {
+                                        path: 'create',
+                                        name: 'store.staff.create',
+                                        component: () => CreateStaff
+                                    },
+                                    {
+                                        path: '',
+                                        name: 'store.staff',
+                                        component: () => ListStaff
+                                    }
+                                ]
                             },
                             {
                                 path: ':storeId/setting-times',
@@ -48,12 +61,12 @@ const routes = [
                     },
                     {
                         path: '',
-                        component: () => List
+                        component: () => ListStore
                     },
                 ]
             },
             {
-                path: '',
+                path: 'dashboard',
                 name: 'dashboard',
                 component: () => DashBoard
             },
