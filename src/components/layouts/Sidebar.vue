@@ -33,7 +33,7 @@ const m_list = reactive([
     position: 2,
     name: 'store',
     text: 'Store',
-    url: '/store'
+    url: '/stores'
   },
   // {
   //   position: 3,

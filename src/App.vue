@@ -1,7 +1,7 @@
 <template>
   <BaseAlert/>
   <ConfirmModal />
-  <router-view></router-view>
+  <routerView />
 </template>
 
 <script setup>

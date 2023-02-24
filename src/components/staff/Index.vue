@@ -125,4 +125,5 @@ const openModalCreateStore = () => {
   modal.event = EVENT_CREATE_CONSTANT;
   showModal();
 }
+console.log("sss");
 </script>

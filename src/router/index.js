@@ -23,24 +23,26 @@ const routes = [
                 component: () => DashBoard
             },
             {
-                path: '/store',
+                path: '/stores',
                 name: 'Store',
-                component: () => Store
-            },
-            {
-                path: '/service',
-                name: 'Service',
-                component: () => Service
-            },
-            {
-                path: '/staff',
-                name: 'Staff',
-                component: () => Staff
-            },
-            {
-                path: '/setting-time',
-                name: 'SettingTime',
-                component: () => SettingTime
+                component: () => Store,
+                children: [
+                    {
+                        path: '/:storeId/services',
+                        name: 'Service',
+                        component: () => Service
+                    },
+                    {
+                        path: '/:storeId/staffs',
+                        name: 'Staff',
+                        component: () => Staff
+                    },
+                    {
+                        path: '/stores/:storeId/setting-times',
+                        name: 'SettingTime',
+                        component: () => SettingTime
+                    }
+                ]
             }
         ]
     },

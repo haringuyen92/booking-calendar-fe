@@ -83,9 +83,10 @@
       </BaseModal>
     </div>
     <Suspense>
-      <BaseDataTable :columns="dataTable.columns" :rows="dataTable.rows" @onGetItem="getStore" @onDeleteItem="confirmDeleteStore"/>
+      <BaseDataTable :columns="dataTable.columns" :rows="dataTable.rows" @onSettingItem="settingStore" @onGetItem="getStore" @onDeleteItem="confirmDeleteStore"/>
     </Suspense>
   </div>
+  <routerView />
 </template>
 <script setup>
 import {computed, reactive, toRefs, watch} from 'vue';
@@ -96,6 +97,7 @@ import {useAuthStore} from "@/stores/authStore";
 import {useAlertStore} from "@/stores/alertStore";
 import {useConfirmModalStore} from "@/stores/confirmModalStore";
 import {EVENT_CREATE_CONSTANT, EVENT_UPDATE_CONSTANT, STORE_CONSTANT} from '@/common/constant';
+import {router} from "@/router";
 
 const confirmModalStore = useConfirmModalStore();
 const alertStore = useAlertStore();
@@ -198,6 +200,14 @@ const deleteStore = async () => {
     confirmModalStore.hide();
     await getListStore();
   }
+}
+const settingStore = id => {
+  router.push({
+    name: 'SettingTime',
+    params: {
+      storeId: id
+    }
+  });
 }
 const getTitle = computed(() => modal.event === 'create' ? 'Create Store' : 'Update Store');
 watch(isConfirm, () => {

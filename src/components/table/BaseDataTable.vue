@@ -8,12 +8,13 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(row, num) in rows" :key="row.id" @click="getItem(row.id)">
+      <tr v-for="(row, num) in rows" :key="row.id" @click="settingItem(row.id)">
         <td>{{ num+1 }}</td>
         <td v-for="(column, c_key) in columns" :key="c_key">
           {{ row[column] }}
         </td>
         <td>
+          <button class="btn btn-info" type="button" @click="getItem(row.id)">Detail</button> &nbsp;
           <button class="btn btn-danger" type="button" @click="deleteItem(row.id)">Delete</button>
         </td>
       </tr>
@@ -24,7 +25,7 @@
 <script setup>
 import {defineProps, defineEmits, toRefs} from "vue";
 
-  const emit = defineEmits(['onGetItem', 'onDeleteItem'])
+  const emit = defineEmits(['onGetItem', 'onDeleteItem', 'onSettingItem'])
   const props = defineProps({
     columns: {
       type: Array,
@@ -37,10 +38,13 @@ import {defineProps, defineEmits, toRefs} from "vue";
   });
   const { columns, rows } = toRefs(props);
 
-  const getItem = id => {
+  const settingItem = id => {
     if(event.target.tagName !== 'BUTTON'){
-      emit('onGetItem', id);
+      emit('onSettingItem', id);
     }
+  }
+  const getItem = id => {
+    emit('onGetItem', id);
   }
   const deleteItem = id => {
     emit('onDeleteItem', id);

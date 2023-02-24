@@ -2,7 +2,7 @@
   <Sidebar />
   <Header />
   <div class="h__wrapper">
-    <router-view></router-view>
+    <routerView />
   </div>
 </template>
 
