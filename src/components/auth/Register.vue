@@ -48,7 +48,7 @@
         </div>
       </form>
       <div class="text-center h__form_footer">
-        <router-link to="/login">Login</router-link>
+        <RouterLink to="/login">Login</RouterLink>
       </div>
     </div>
   </div>

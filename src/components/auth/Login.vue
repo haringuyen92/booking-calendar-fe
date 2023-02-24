@@ -30,7 +30,7 @@
         </div>
       </form>
       <div class="text-center h__form_footer">
-        <router-link to="/register">Register</router-link>
+        <RouterLink to="/register">Register</RouterLink>
       </div>
     </div>
   </div>

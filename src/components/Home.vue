@@ -6,13 +6,9 @@
   </div>
 </template>
 
-<script>
+<script setup>
   import Sidebar from '@/components/layouts/Sidebar.vue';
   import Header from '@/components/layouts/Header.vue';
-
-  export default{
-    components: { Sidebar, Header },
-  }
 </script>
 
 <style>

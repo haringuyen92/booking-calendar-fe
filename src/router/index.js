@@ -10,6 +10,8 @@ import Service from "@/components/service/Index.vue";
 import Register from "@/components/auth/Register.vue";
 import { useAlertStore } from "@/stores/alertStore";
 import { useAuthStore } from "@/stores/authStore";
+import List from "@/components/store/List.vue";
+import Setting from "@/components/store/Setting.vue";
 
 const routes = [
     {
@@ -18,32 +20,43 @@ const routes = [
         component: () => Home,
         children: [
             {
-                path: '/dashboard',
-                name: 'Dashboard',
-                component: () => DashBoard
-            },
-            {
-                path: '/stores',
-                name: 'Store',
+                path: 'stores',
+                name: 'store',
                 component: () => Store,
                 children: [
                     {
-                        path: '/:storeId/services',
-                        name: 'Service',
-                        component: () => Service
+                        path: 'setting',
+                        name: 'store.setting',
+                        component: () => Setting,
+                        children: [
+                            {
+                                path: ':storeId/services',
+                                name: 'store.service',
+                                component: () => Service
+                            },
+                            {
+                                path: ':storeId/staffs',
+                                name: 'store.staff',
+                                component: () => Staff
+                            },
+                            {
+                                path: ':storeId/setting-times',
+                                name: 'store.settingTime',
+                                component: () => SettingTime
+                            },
+                        ]
                     },
                     {
-                        path: '/:storeId/staffs',
-                        name: 'Staff',
-                        component: () => Staff
+                        path: '',
+                        component: () => List
                     },
-                    {
-                        path: '/stores/:storeId/setting-times',
-                        name: 'SettingTime',
-                        component: () => SettingTime
-                    }
                 ]
-            }
+            },
+            {
+                path: '',
+                name: 'dashboard',
+                component: () => DashBoard
+            },
         ]
     },
     {

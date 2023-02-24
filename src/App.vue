@@ -26,15 +26,11 @@ import ConfirmModal from "@/components/modal/ConfirmModal.vue";
   #app *:not(h1,h2,h3,h4,h5,h6,label){
     font-size: 0.8rem;
   }
-  .h__left{
-    margin-left: 250px;
+  a{
+    text-decoration: none!important;
   }
-  .h__sidebar_menu_item:hover .nav-link{
-    background-color: rgba(255,255,255,.1);
-  }
-  .router-link-active{
-    background-color: #007bff;
-    color: #fff;
-    box-shadow: 0 1px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%);
+  .nav-link{
+    min-width: 120px;
+    padding: 15px 20px !important;
   }
 </style>

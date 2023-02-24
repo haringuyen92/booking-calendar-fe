@@ -2,7 +2,7 @@
   <div class="h__sidebar">
     <ul class="nav flex-column">
       <li class="nav-item h__sidebar_menu_item" v-for="(item, key) in m_list" :key="key">
-        <router-link class="nav-link text-white" aria-current="page" :to="item.url">{{ item.text }}</router-link>
+        <RouterLink class="nav-link text-white" aria-current="page" :to="item.url">{{ item.text }}</RouterLink>
       </li>
       <li class="nav-item h__sidebar_menu_item h__sidebar_cursor" @click="logout">
         <span class="nav-link text-white" aria-current="page">Logout</span>
@@ -27,7 +27,7 @@ const m_list = reactive([
     position: 1,
     name: 'dashboard',
     text: 'Dashboard',
-    url: '/dashboard'
+    url: '/'
   },
   {
     position: 2,
@@ -55,7 +55,7 @@ const m_list = reactive([
   // },
 ])
 </script>
-<style>
+<style scoped>
   .h__sidebar{
     position: absolute;
     top: 0;
@@ -74,10 +74,15 @@ const m_list = reactive([
   .h__sidebar_menu_item:last-child{
     border-bottom: 1px solid gray;
   }
-  .h__sidebar_menu_item .nav-link{
-    padding: 15px 20px !important;
-  }
   .h__sidebar_cursor{
     cursor: pointer;
+  }
+  .h__sidebar_menu_item:hover .nav-link:not(.router-link-exact-active){
+    background-color: rgba(255,255,255,.1);
+  }
+  .router-link-exact-active{
+    background-color: #007bff;
+    color: #fff;
+    box-shadow: 0 1px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%);
   }
 </style>

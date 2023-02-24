@@ -2,7 +2,7 @@
   <div class="h__c_404">
     <h2>404 Not Found</h2>
     <div>
-        <router-link to="/dashboard">Home</router-link>
+        <RouterLink to="/">Home</RouterLink>
     </div>
   </div>
 </template>
