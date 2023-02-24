@@ -1,9 +1,7 @@
 import {defineStore} from 'pinia';
 import AuthService from "@/services/authService";
-import {useRouter} from "vue-router";
 import {useAlertStore} from "@/stores/alertStore";
 
-const router = useRouter();
 export const useAuthStore = defineStore('auth', {
     state: () => ({
         user: JSON.parse(localStorage.getItem('user')),
@@ -39,7 +37,6 @@ export const useAuthStore = defineStore('auth', {
         async logout() {
             this.user = null;
             localStorage.removeItem('user');
-            await router.push('/login');
         }
     },
 })

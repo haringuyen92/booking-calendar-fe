@@ -4,13 +4,24 @@
       <li class="nav-item h__sidebar_menu_item" v-for="(item, key) in m_list" :key="key">
         <router-link class="nav-link text-white" aria-current="page" :to="item.url">{{ item.text }}</router-link>
       </li>
+      <li class="nav-item h__sidebar_menu_item h__sidebar_cursor" @click="logout">
+        <span class="nav-link text-white" aria-current="page">Logout</span>
+      </li>
     </ul>
   </div>
 </template>
 
 <script setup>
 import { reactive } from "vue";
+import { useAuthStore } from "@/stores/authStore";
+import { useRouter } from "vue-router";
 
+const authStore = useAuthStore();
+const router = useRouter();
+const logout = () => {
+  authStore.logout();
+  router.push('/login');
+}
 const m_list = reactive([
   {
     position: 1,
@@ -24,24 +35,24 @@ const m_list = reactive([
     text: 'Store',
     url: '/store'
   },
-  {
-    position: 3,
-    name: 'setting_time',
-    text: 'Setting Time',
-    url: '/setting-time'
-  },
-  {
-    position: 4,
-    name: 'dashboard',
-    text: 'Staff',
-    url: '/staff'
-  },
-  {
-    position: 5,
-    name: 'service',
-    text: 'Service',
-    url: '/service'
-  },
+  // {
+  //   position: 3,
+  //   name: 'setting_time',
+  //   text: 'Setting Time',
+  //   url: '/setting-time'
+  // },
+  // {
+  //   position: 4,
+  //   name: 'dashboard',
+  //   text: 'Staff',
+  //   url: '/staff'
+  // },
+  // {
+  //   position: 5,
+  //   name: 'service',
+  //   text: 'Service',
+  //   url: '/service'
+  // },
 ])
 </script>
 <style>
@@ -65,5 +76,8 @@ const m_list = reactive([
   }
   .h__sidebar_menu_item .nav-link{
     padding: 15px 20px !important;
+  }
+  .h__sidebar_cursor{
+    cursor: pointer;
   }
 </style>
