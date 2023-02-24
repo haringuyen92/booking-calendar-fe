@@ -75,10 +75,8 @@ const routes = [
         component: () => PageNotFound
     }
 ]
-console.log("router")
 export const router = createRouter({
     history: createWebHistory(),
-    // linkActiveClass: 'active',
     routes: routes
 })
 router.beforeEach((to, from, next) => {
