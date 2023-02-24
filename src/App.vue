@@ -33,4 +33,12 @@ import ConfirmModal from "@/components/modal/ConfirmModal.vue";
     min-width: 120px;
     padding: 15px 20px !important;
   }
+  @keyframes fadeEffect {
+    from {opacity: 0;}
+    to {opacity: 1;}
+  }
+  @-webkit-keyframes fadeEffect {
+    from {opacity: 0;}
+    to {opacity: 1;}
+  }
 </style>

@@ -73,25 +73,23 @@
           </div>
         </template>
         <template v-slot:action>
-          <button class="button is-success" v-if="modal.event === EVENT_CREATE_CONSTANT"
-                  @click="createStore">Create
+          <button class="button is-success" v-if="modal.event === EVENT_CREATE_CONSTANT">Create
           </button>
-          <button class="button is-success" v-if="modal.event === EVENT_UPDATE_CONSTANT"
-                  @click="updateStore">Update
+          <button class="button is-success" v-if="modal.event === EVENT_UPDATE_CONSTANT">Update
           </button>
         </template>
       </BaseModal>
     </div>
     <Suspense>
-      <BaseDataTable :columns="dataTable.columns" :rows="dataTable.rows" @onGetItem="getStore" @onDeleteItem="confirmDeleteStore"/>
+      <BaseDataTable :columns="dataTable.columns" :rows="dataTable.rows" @onGetItem="getStaff" @onDeleteItem="confirmDeleteStaff"/>
     </Suspense>
   </div>
 </template>
 <script setup>
 import BaseModal from "@/components/modal/BaseModal.vue";
 import BaseDataTable from "@/components/table/BaseDataTable.vue";
-import {reactive} from "vue";
-import {EVENT_CREATE_CONSTANT} from "@/common/constant";
+import {computed, reactive} from "vue";
+import {EVENT_CREATE_CONSTANT, EVENT_UPDATE_CONSTANT} from "@/common/constant";
 
 const dataTable = reactive({
   columns: ['name', 'description', 'address', 'phone'],
@@ -111,6 +109,7 @@ const formData = reactive({
   email: '',
   address: '',
 });
+const getTitle = computed(() => modal.event === 'create' ? 'Create Store' : 'Update Store');
 const showModal = () => modal.status = true;
 const closeModal = () => modal.status = false;
 const openModalCreateStore = () => {
@@ -125,5 +124,12 @@ const openModalCreateStore = () => {
   modal.event = EVENT_CREATE_CONSTANT;
   showModal();
 }
-console.log("sss");
+
+const getStaff = () => {
+  console.log("getStaff");
+}
+const confirmDeleteStaff = () => {
+  console.log("confirmDeleteStaff");
+}
+
 </script>

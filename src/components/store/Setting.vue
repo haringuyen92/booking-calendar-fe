@@ -6,7 +6,9 @@
       </div>
     </div>
   </nav>
-  <RouterView/>
+  <div class="main__setting">
+    <RouterView/>
+  </div>
 </template>
 <script setup>
 import {reactive} from "vue";
@@ -41,5 +43,9 @@ const settingList = reactive([
 .navbar-item:focus,
 .navbar-item:hover {
   background: #189F55;
+}
+.main__setting{
+  animation: fadeEffect 1s;
+  -webkit-animation: fadeEffect 1s;
 }
 </style>
