@@ -49,9 +49,9 @@ const m_list = reactive([
   // },
   // {
   //   position: 5,
-  //   name: 'service',
+  //   name: 'course',
   //   text: 'Service',
-  //   url: '/service'
+  //   url: '/course'
   // },
 ])
 </script>

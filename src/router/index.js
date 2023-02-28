@@ -8,7 +8,7 @@ import Staff from "@/components/staff/Index.vue";
 import ListStaff from "@/components/staff/List.vue";
 import CreateStaff from "@/components/staff/Create.vue";
 import SettingTime from "@/components/setting-time/Index.vue";
-import Service from "@/components/service/Index.vue";
+import Service from "@/components/course/Index.vue";
 import Register from "@/components/auth/Register.vue";
 import { useAlertStore } from "@/stores/alertStore";
 import { useAuthStore } from "@/stores/authStore";
@@ -33,7 +33,7 @@ const routes = [
                         children: [
                             {
                                 path: ':storeId/services',
-                                name: 'store.service',
+                                name: 'store.course',
                                 component: () => Service
                             },
                             {
