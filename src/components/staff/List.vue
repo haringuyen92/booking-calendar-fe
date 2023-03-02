@@ -17,10 +17,10 @@ const dataTable = reactive({
   rows: [],
 });
 const getStaff = () => {
-  console.log("getStaff");
+
 }
 const confirmDeleteStaff = () => {
   console.log("confirmDeleteStaff");
 }
-
+getStaff();
 </script>
