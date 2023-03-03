@@ -54,3 +54,12 @@ textarea{
 .h__md_background{
     background: rgb(100 100 100 / 86%);
 }
+.h__form_basic .h__form_group>div>input,
+.h__form_basic .h__form_group>div>textarea{
+    width: calc(100% - 50px);
+}
+.h__form_basic .h__form_group>div .hf__count_i{
+    font-weight: normal !important;
+    font-size: 0.7rem !important;
+    margin-left: 5px;
+}

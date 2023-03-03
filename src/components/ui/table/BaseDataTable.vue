@@ -8,14 +8,14 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(row, num) in rows" :key="row.id" @click="settingItem(row.id)">
+      <tr v-for="(row, num) in rows" :key="row.id" @click="settingItem(row._id)">
         <td>{{ num+1 }}</td>
         <td v-for="(column, c_key) in columns" :key="c_key">
           {{ row[column] }}
         </td>
         <td>
-          <button class="btn btn-info" type="button" @click="getItem(row.id)">Detail</button> &nbsp;
-          <button class="btn btn-danger" type="button" @click="deleteItem(row.id)">Delete</button>
+          <button class="btn btn-info" type="button" @click="getItem(row._id)">Detail</button> &nbsp;
+          <button class="btn btn-danger" type="button" @click="deleteItem(row._id)">Delete</button>
         </td>
       </tr>
     </tbody>

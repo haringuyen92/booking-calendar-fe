@@ -32,7 +32,7 @@ const routes = [
                         component: () => Setting,
                         children: [
                             {
-                                path: ':storeId/services',
+                                path: '/stores/:storeId/services',
                                 name: 'store.course',
                                 component: () => Service
                             },
@@ -46,6 +46,11 @@ const routes = [
                                         component: () => CreateStaff
                                     },
                                     {
+                                        path: 'update/:staffId',
+                                        name: 'store.staff.update',
+                                        component: () => CreateStaff
+                                    },
+                                    {
                                         path: '',
                                         name: 'store.staff',
                                         component: () => ListStaff
@@ -53,7 +58,7 @@ const routes = [
                                 ]
                             },
                             {
-                                path: ':storeId/setting-times',
+                                path: '/stores/:storeId/setting-times',
                                 name: 'store.settingTime',
                                 component: () => SettingTime
                             },

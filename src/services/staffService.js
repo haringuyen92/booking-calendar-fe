@@ -1,8 +1,42 @@
 import httpClient from "@/httpClient";
 
 class StaffService{
-    getAll(storeId = ''){
-        return httpClient.get(`${storeId}`);
+    getAll(storeId){
+        try {
+            return httpClient.get(`/stores/${storeId}/staffs`);
+        }catch (e){
+            return e.message;
+        }
+    }
+    get(storeId, id){
+        try {
+            return httpClient.get(`/stores/${storeId}/staffs/${id}`);
+        }catch (e){
+            return e.message;
+        }
+    }
+    create(storeId, staff){
+        try {
+            const acceptData = ['name', 'image', 'description', 'cost', 'maxBookingSlot']
+            for (let key in staff){
+                if(!acceptData.includes(key)) delete staff[key];
+            }
+            return httpClient.post(`/stores/${storeId}/staffs`,staff);
+        }catch (e){
+            return e.message;
+        }
+    }
+    update(storeId, staffId, staff){
+        try {
+            const acceptData = ['name', 'image', 'description', 'cost', 'maxBookingSlot']
+            for (let key in staff){
+                if(!acceptData.includes(key)) delete staff[key];
+            }
+            console.log(staff);
+            return httpClient.put(`/stores/${storeId}/staffs/${staffId}`,staff);
+        }catch (e){
+            return e.message;
+        }
     }
 }
-module.exports = new StaffService();
+export default new StaffService();

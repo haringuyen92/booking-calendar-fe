@@ -36,8 +36,8 @@ const settingList = reactive([
 </script>
 <style scoped>
 .h__nav_bar {
-  margin-bottom: 15px;
   background: #08BF5A;
+  margin: -10px -15px 15px;
 }
 .router-link-active,
 .navbar-item:focus,
