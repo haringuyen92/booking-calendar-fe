@@ -32,7 +32,6 @@ class StaffService{
             for (let key in staff){
                 if(!acceptData.includes(key)) delete staff[key];
             }
-            console.log(staff);
             return httpClient.put(`/stores/${storeId}/staffs/${staffId}`,staff);
         }catch (e){
             return e.message;
