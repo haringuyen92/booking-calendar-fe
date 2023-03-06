@@ -82,10 +82,10 @@ const createStaff = async () => {
   if (typeof res === 'string') {
     alertStore.error(res);
   } else {
-    alertStore.success(res.message);
     await router.push({
       name: 'store.staff'
     });
+    alertStore.success(res.message);
   }
 }
 const updateStaff = async () => {
@@ -99,10 +99,10 @@ const updateStaff = async () => {
   if (typeof res === 'string') {
     alertStore.error(res);
   } else {
-    alertStore.success(res.message);
     await router.push({
       name: 'store.staff'
     });
+    alertStore.success(res.message);
   }
 };
 const storeStaff = () => {

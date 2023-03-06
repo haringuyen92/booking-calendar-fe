@@ -23,7 +23,7 @@ const settingList = reactive([
     params: {storeId}
   },
   {
-    title: 'Service',
+    title: 'Course',
     name: 'store.course',
     params: {storeId}
   },

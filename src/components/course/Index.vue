@@ -1,5 +1,5 @@
 <template>
   <div>
-    service
+    Course
   </div>
 </template>

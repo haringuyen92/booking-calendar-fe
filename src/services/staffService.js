@@ -37,5 +37,12 @@ class StaffService{
             return e.message;
         }
     }
+    delete(storeId, staffId){
+        try {
+            return httpClient.delete(`/stores/${storeId}/staffs/${staffId}`);
+        }catch (e){
+            return e.message;
+        }
+    }
 }
 export default new StaffService();
