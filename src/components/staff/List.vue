@@ -11,6 +11,10 @@
               <label class="col-4 has-text-right mr-2">isAllCourse:</label>
               <input type="checkbox">
             </div>
+            <div class="h__form_group d-flex flex-row" v-for="course in courses" :key="course">
+              <label class="col-4 has-text-right mr-2">{{ course.name }}:</label>
+              <input type="checkbox">
+            </div>
           </div>
         </div>
       </template>
@@ -37,6 +41,7 @@ import {EVENT_CREATE_CONSTANT, STAFF_CONSTANT} from "@/common/constant";
 import {useConfirmModalStore} from "@/stores/confirmModalStore";
 import {useAlertStore} from "@/stores/alertStore";
 import BaseModal from "@/components/ui/modal/BaseModal.vue";
+import CourseService from "@/services/courseService";
 
 const {storeId} = useRoute().params;
 const confirmModalStore = useConfirmModalStore();
@@ -47,6 +52,7 @@ const dataTable = reactive({
   columns: ['name', 'image', 'description', 'cost', 'maxBookingSlot'],
   rows: [],
 });
+let courses = reactive([]);
 const modal = reactive({
   status: false,
   event: EVENT_CREATE_CONSTANT
@@ -85,8 +91,11 @@ const deleteStore = async () => {
     await getListStaff();
   }
 }
-const settingStaff = id => {
-  console.log(id);
+const settingStaff = async id => {
+  const resGetCourse = await CourseService.getAll(storeId);
+  courses = [...resGetCourse.data]
+  console.log(id)
+  console.log(resGetCourse.data)
   showModal();
 }
 watch(isConfirm, () => {
