@@ -41,4 +41,8 @@ import ConfirmModal from "@/components/ui/modal/ConfirmModal.vue";
     from {opacity: 0;}
     to {opacity: 1;}
   }
+  input[type=checkbox]{
+    width: 16px;
+    height: 16px;
+  }
 </style>

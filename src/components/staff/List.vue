@@ -3,8 +3,25 @@
     <div>
       <RouterLink :to="{name:'store.staff.create'}" type="button" class="btn btn-primary">New Staff</RouterLink>
     </div>
+    <BaseModal v-model="modal.status" v-if="modal.status" @onCloseModal="closeModal" title="Setting Staff">
+      <template v-slot:main>
+        <div class="h__form_center">
+          <div class="h__form_basic">
+            <div class="h__form_group d-flex flex-row">
+              <label class="col-4 has-text-right mr-2">isAllCourse:</label>
+              <input type="checkbox">
+            </div>
+          </div>
+        </div>
+      </template>
+      <template v-slot:action>
+        <button class="button is-success">Update</button>
+      </template>
+    </BaseModal>
     <Suspense>
-      <BaseDataTable :columns="dataTable.columns" :rows="dataTable.rows" @onGetItem="getStaff"
+      <BaseDataTable :columns="dataTable.columns"
+                     :rows="dataTable.rows"
+                     @onGetItem="getStaff"
                      @onSettingItem="settingStaff"
                      @onDeleteItem="confirmDeleteStaff"/>
     </Suspense>
@@ -16,9 +33,10 @@ import {reactive, toRefs, watch} from "vue";
 import StaffService from "@/services/staffService";
 import {useRoute} from "vue-router";
 import {router} from "@/router";
-import {STAFF_CONSTANT} from "@/common/constant";
+import {EVENT_CREATE_CONSTANT, STAFF_CONSTANT} from "@/common/constant";
 import {useConfirmModalStore} from "@/stores/confirmModalStore";
 import {useAlertStore} from "@/stores/alertStore";
+import BaseModal from "@/components/ui/modal/BaseModal.vue";
 
 const {storeId} = useRoute().params;
 const confirmModalStore = useConfirmModalStore();
@@ -29,6 +47,12 @@ const dataTable = reactive({
   columns: ['name', 'image', 'description', 'cost', 'maxBookingSlot'],
   rows: [],
 });
+const modal = reactive({
+  status: false,
+  event: EVENT_CREATE_CONSTANT
+});
+const showModal = () => modal.status = true;
+const closeModal = () => modal.status = false;
 const getListStaff = async () => {
   const res = await StaffService.getAll(storeId);
   if (res?.success) {
@@ -63,6 +87,7 @@ const deleteStore = async () => {
 }
 const settingStaff = id => {
   console.log(id);
+  showModal();
 }
 watch(isConfirm, () => {
   if (component.value === STAFF_CONSTANT) {
