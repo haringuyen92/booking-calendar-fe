@@ -43,6 +43,11 @@ const routes = [
                                         component: () => CreateCourse
                                     },
                                     {
+                                        path: 'update/:courseId',
+                                        name: 'store.course.update',
+                                        component: () => CreateCourse
+                                    },
+                                    {
                                         path: '',
                                         name: 'store.course',
                                         component: () => ListCourse

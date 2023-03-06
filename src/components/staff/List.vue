@@ -1,10 +1,11 @@
 <template>
   <div ref="el">
     <div>
-      <RouterLink :to="{name:'store.staff.create'}" type="button" class="btn btn-primary">New Store</RouterLink>
+      <RouterLink :to="{name:'store.staff.create'}" type="button" class="btn btn-primary">New Staff</RouterLink>
     </div>
     <Suspense>
       <BaseDataTable :columns="dataTable.columns" :rows="dataTable.rows" @onGetItem="getStaff"
+                     @onSettingItem="settingStaff"
                      @onDeleteItem="confirmDeleteStaff"/>
     </Suspense>
   </div>
@@ -59,6 +60,9 @@ const deleteStore = async () => {
     confirmModalStore.hide();
     await getListStaff();
   }
+}
+const settingStaff = id => {
+  console.log(id);
 }
 watch(isConfirm, () => {
   if (component.value === STAFF_CONSTANT) {

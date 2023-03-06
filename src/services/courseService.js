@@ -3,14 +3,14 @@ import httpClient from "@/httpClient";
 class CourseService{
     getAll(storeId){
         try {
-            return httpClient.get(`/stores/${storeId}/course`);
+            return httpClient.get(`/stores/${storeId}/courses`);
         }catch (e){
             return e.message;
         }
     }
     get(storeId, id){
         try {
-            return httpClient.get(`/stores/${storeId}/course/${id}`);
+            return httpClient.get(`/stores/${storeId}/courses/${id}`);
         }catch (e){
             return e.message;
         }
@@ -21,7 +21,7 @@ class CourseService{
             for (let key in staff){
                 if(!acceptData.includes(key)) delete staff[key];
             }
-            return httpClient.post(`/stores/${storeId}/course`,staff);
+            return httpClient.post(`/stores/${storeId}/courses`,staff);
         }catch (e){
             return e.message;
         }
@@ -32,14 +32,14 @@ class CourseService{
             for (let key in staff){
                 if(!acceptData.includes(key)) delete staff[key];
             }
-            return httpClient.put(`/stores/${storeId}/course/${staffId}`,staff);
+            return httpClient.put(`/stores/${storeId}/courses/${staffId}`,staff);
         }catch (e){
             return e.message;
         }
     }
     delete(storeId, staffId){
         try {
-            return httpClient.delete(`/stores/${storeId}/course/${staffId}`);
+            return httpClient.delete(`/stores/${storeId}/courses/${staffId}`);
         }catch (e){
             return e.message;
         }
