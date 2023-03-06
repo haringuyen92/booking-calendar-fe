@@ -9,6 +9,8 @@ import ListStaff from "@/components/staff/List.vue";
 import CreateStaff from "@/components/staff/Create.vue";
 import SettingTime from "@/components/setting-time/Index.vue";
 import Course from "@/components/course/Index.vue";
+import ListCourse from "@/components/course/List.vue";
+import CreateCourse from "@/components/course/Create.vue";
 import Register from "@/components/auth/Register.vue";
 import { useAlertStore } from "@/stores/alertStore";
 import { useAuthStore } from "@/stores/authStore";
@@ -33,8 +35,19 @@ const routes = [
                         children: [
                             {
                                 path: '/stores/:storeId/course',
-                                name: 'store.course',
-                                component: () => Course
+                                component: () => Course,
+                                children: [
+                                    {
+                                        path: 'create',
+                                        name: 'store.course.create',
+                                        component: () => CreateCourse
+                                    },
+                                    {
+                                        path: '',
+                                        name: 'store.course',
+                                        component: () => ListCourse
+                                    }
+                                ]
                             },
                             {
                                 path: ':storeId/staff',

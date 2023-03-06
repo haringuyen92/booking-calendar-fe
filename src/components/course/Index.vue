@@ -1,5 +1,3 @@
 <template>
-  <div>
-    Course
-  </div>
+  <RouterView />
 </template>
