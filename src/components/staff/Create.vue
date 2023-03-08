@@ -51,12 +51,12 @@ import {useStaffStore} from "@/stores/staffStore";
 import {useRoute} from "vue-router";
 import StaffService from "@/services/staffService";
 import {useAlertStore} from "@/stores/alertStore";
-const alertStore = useAlertStore();
-const { storeId,staffId } = useRoute().params;
 import { router } from "@/router";
 import {EVENT_CREATE_CONSTANT, EVENT_UPDATE_CONSTANT, MAX_LENGTH_DESCRIPTION, MAX_LENGTH_NAME} from "@/common/constant";
 
+const alertStore = useAlertStore();
 const staffStore = useStaffStore();
+const { storeId,staffId } = useRoute().params;
 staffStore.reset();
 
 const getLength = value => value ? value.length : 0;

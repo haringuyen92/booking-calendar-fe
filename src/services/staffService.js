@@ -28,7 +28,7 @@ class StaffService{
     }
     update(storeId, staffId, staff){
         try {
-            const acceptData = ['name', 'image', 'description', 'cost', 'maxBookingSlot']
+            const acceptData = ['name', 'image', 'description', 'cost', 'maxBookingSlot', 'isAllCourse', 'courses']
             for (let key in staff){
                 if(!acceptData.includes(key)) delete staff[key];
             }

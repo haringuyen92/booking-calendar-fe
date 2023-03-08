@@ -94,7 +94,7 @@
     if(!result?.success){
       setMessageErrorResponse('Credentials Invalid!');
     }else{
-      await router.push(storeAuth.returnUrl);
+      await router.push(storeAuth.returnUrl).then(() => router.go());
     }
   }
 </script>

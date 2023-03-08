@@ -9,13 +9,16 @@
   <div class="main__setting">
     <RouterView/>
   </div>
+  <div class="mt-3">
+    <button class="button is-danger" type="button" @click="router.go(-1)">back</button>
+  </div>
 </template>
 <script setup>
 import {reactive} from "vue";
 import {useRoute} from "vue-router";
+import {router} from "@/router";
 
-const router = useRoute();
-const {storeId} = router.params;
+const {storeId} = useRoute().params;
 const settingList = reactive([
   {
     title: 'Setting Time',

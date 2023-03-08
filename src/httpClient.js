@@ -3,7 +3,7 @@ import {useLoading} from 'vue-loading-overlay';
 import {authHeader} from "@/helper/auth-header";
 
 const $loading = useLoading();
-let loader;
+var loader = null;
 const httpClient = axios.create({
     baseURL: `http://localhost:3000/api`,
     withCredentials: true,
@@ -11,18 +11,24 @@ const httpClient = axios.create({
         ...authHeader()
     }
 });
-httpClient.interceptors.request.use(function (config) {
-    loader = $loading.show();
+function hideLoader(){
+    loader.hide();
+}
+httpClient.interceptors.request.use( (config) => {
+    loader = $loading.show({
+        backgroundColor: '#787878',
+        canCancel: true
+    });
     return config;
 }, function (error) {
     return Promise.reject(error);
 });
 
-httpClient.interceptors.response.use(function (response) {
-    loader.hide();
+httpClient.interceptors.response.use( (response) => {
+    hideLoader()
     return response.data;
-}, function (err) {
-    loader.hide();
+}, (err) => {
+    hideLoader()
     const error = {};
     if(err.response) {
         // The request was made and the server responded with a status code
