@@ -5,17 +5,17 @@
                 <label class="col-2" for="name">isRequiredStaff:</label>
                 <div class="col-9">
                     <div class="d-flex flex-row gap-5">
-                        <div class="d-flex align-content-center">
+                        <div class="d-flex align-items-center">
                             <input type="radio" v-model="settingSlot.isRequiredStaff" name="isRequiredStaff"
                                    :value="USED" @change="postSettingSlot">
                             <label class="ml-1 text-danger">used</label>
                         </div>
-                        <div class="d-flex align-content-center">
+                        <div class="d-flex align-items-center">
                             <input type="radio" v-model="settingSlot.isRequiredStaff" name="isRequiredStaff"
                                    :value="OPTION" @change="postSettingSlot">
                             <label class="ml-1 text-primary">option</label>
                         </div>
-                        <div class="d-flex align-content-center">
+                        <div class="d-flex align-items-center">
                             <input type="radio" v-model="settingSlot.isRequiredStaff" name="isRequiredStaff"
                                    :value="NOT_USED" @change="postSettingSlot">
                             <label class="ml-1">not used</label>
@@ -27,12 +27,12 @@
                 <label class="col-2" for="name">isUseCostStaff:</label>
                 <div class="col-9">
                     <div class="d-flex flex-row gap-5">
-                        <div class="d-flex align-content-center">
+                        <div class="d-flex align-items-center">
                             <input type="radio" v-model="settingSlot.isUseCostStaff" name="isUseCostStaff" :value="USED"
                                    @change="postSettingSlot">
                             <label class="ml-1 text-primary">used</label>
                         </div>
-                        <div class="d-flex align-content-center">
+                        <div class="d-flex align-items-center">
                             <input type="radio" v-model="settingSlot.isUseCostStaff" name="isUseCostStaff"
                                    :value="NOT_USED" @change="postSettingSlot">
                             <label class="ml-1">not used</label>

@@ -41,7 +41,8 @@ import ConfirmModal from "@/components/ui/modal/ConfirmModal.vue";
     from {opacity: 0;}
     to {opacity: 1;}
   }
-  input[type=checkbox]{
+  input[type=checkbox],
+  input[type=radio]{
     width: 16px;
     height: 16px;
   }
