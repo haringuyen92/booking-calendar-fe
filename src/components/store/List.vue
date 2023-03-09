@@ -92,7 +92,6 @@ import {computed, reactive, toRefs, watch} from 'vue';
 import StoreService from "@/services/storeService";
 import BaseDataTable from "@/components/ui/table/BaseDataTable.vue";
 import BaseModal from "@/components/ui/modal/BaseModal.vue";
-import {useAuthStore} from "@/stores/authStore";
 import {useAlertStore} from "@/stores/alertStore";
 import {useConfirmModalStore} from "@/stores/confirmModalStore";
 import {EVENT_CREATE_CONSTANT, EVENT_UPDATE_CONSTANT, STORE_CONSTANT} from '@/common/constant';
@@ -102,8 +101,6 @@ const confirmModalStore = useConfirmModalStore();
 const alertStore = useAlertStore();
 
 const {isConfirm, component} = toRefs(confirmModalStore);
-const {user} = useAuthStore();
-const {id} = user;
 
 const dataTable = reactive({
   columns: ['name', 'description', 'address', 'phone'],
@@ -124,7 +121,7 @@ const formData = reactive({
   address: '',
 });
 const getListStore = async () => {
-  const res = await StoreService.getAll(id);
+  const res = await StoreService.getAll();
   if (res?.success) {
     dataTable.rows = [...res.data];
   }
@@ -145,7 +142,7 @@ const openModalCreateStore = () => {
 }
 
 const getStore = async (storeId) => {
-  const res = await StoreService.get(id, storeId);
+  const res = await StoreService.get(storeId);
   if (typeof res === 'string') {
     alertStore.error(res);
   } else {
@@ -163,7 +160,7 @@ const getStore = async (storeId) => {
   }
 }
 const createStore = async () => {
-  const res = await StoreService.create(id, {...formData});
+  const res = await StoreService.create({...formData});
   if (typeof res === 'string') {
     // handler error
     alertStore.error(res);
@@ -174,7 +171,7 @@ const createStore = async () => {
   }
 }
 const updateStore = async () => {
-  const res = await StoreService.update(id, formData.id, formData);
+  const res = await StoreService.update(formData.id, formData);
   if (typeof res === 'string') {
     // handler error
     alertStore.error(res);
@@ -190,7 +187,7 @@ const confirmDeleteStore = id => {
   confirmModalStore.setComponentConfirm(STORE_CONSTANT);
 }
 const deleteStore = async () => {
-  const res = await StoreService.delete(id, confirmModalStore.id);
+  const res = await StoreService.delete(confirmModalStore.id);
   if (typeof res === 'string') {
     // handler error
     alertStore.error(res);
