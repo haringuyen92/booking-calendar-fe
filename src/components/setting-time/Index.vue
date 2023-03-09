@@ -19,21 +19,21 @@
             </div>
             <div class="setting_time-right">
                 <div class="d-flex align-items-center">
-                    <div>
-                        <div>
-                            <VueTimepicker input-class="display-time"></VueTimepicker>
+                    <div class="d-flex flex-column gap-2" v-if="!configs.settingTime.dailySetting.isAllDay">
+                        <div v-for="item in configs.settingTime.dailySetting.data" :key="item">
+                            <VueTimepicker input-class="display-time" v-model="item.from"></VueTimepicker>
                             <span class="ml-1 mr-1">
                                 <b>~</b>
                             </span>
-                            <VueTimepicker></VueTimepicker>
+                            <VueTimepicker input-class="display-time" v-model="item.to"></VueTimepicker>
                         </div>
                     </div>
                     <div class="d-flex align-items-center ml-5">
-                        <input type="checkbox">
+                        <input type="checkbox" v-model="configs.settingTime.dailySetting.isAllDay">
                         <label for="" class="ml-2">isAllDay</label>
                     </div>
-                    <div class="ml-5">
-                        <button class="btn btn-light">
+                    <div class="ml-5" v-if="!configs.settingTime.dailySetting.isAllDay">
+                        <button class="btn btn-light" @click="pushSlotTime(configs.settingTime.dailySetting)">
                             <span class="text-danger">add</span>
                         </button>
                     </div>
@@ -69,6 +69,9 @@ const configs = reactive({
 const setActive = () => configs.isActive = !configs.isActive;
 for(let x in configs){
     console.log(configs[x]);
+}
+const pushSlotTime = slot => {
+  slot.data.push(defaultSlotTime());
 }
 </script>
 <style scoped>
