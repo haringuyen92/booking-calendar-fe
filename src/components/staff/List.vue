@@ -110,10 +110,15 @@ const settingSlot = reactive({
 })
 const showModal = () => modal.status = true;
 const closeModal = () => modal.status = false;
-const getListStaff = async () => {
-    const res = await StaffService.getAll(storeId);
-    if (res?.success) {
-        dataTable.rows = [...res.data];
+const initData = async () => {
+    const resSetting = await SettingSlotService.get(storeId);
+    const resList = await StaffService.getAll(storeId);
+    if(resSetting?.success){
+        settingSlot.isRequiredStaff = resSetting.data.isRequiredStaff || settingSlot.isRequiredStaff;
+        settingSlot.isUseCostStaff = resSetting.data.isUseCostStaff || settingSlot.isUseCostStaff;
+    }
+    if (resList?.success) {
+        dataTable.rows = [...resList.data];
     }
 }
 const getStaff = (id) => {
@@ -139,7 +144,7 @@ const deleteStore = async () => {
     } else {
         alertStore.success(res.message);
         confirmModalStore.hide();
-        await getListStaff();
+        await initData();
     }
 }
 // eslint-disable-next-line no-unused-vars
@@ -195,5 +200,5 @@ watch(isConfirm, () => {
         deleteStore();
     }
 });
-getListStaff();
+initData();
 </script>

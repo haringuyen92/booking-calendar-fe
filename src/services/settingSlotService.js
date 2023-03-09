@@ -1,6 +1,13 @@
 import httpClient from "@/httpClient";
 
 class SettingSlotService{
+    get(storeId){
+        try {
+            return httpClient.get(`/stores/${storeId}/settingSlot`);
+        }catch (e){
+            return e.message;
+        }
+    }
     update(storeId, setting){
         try {
             const acceptData = ['isRequiredStaff', 'isUseCostStaff', 'isRequiredCourse', 'isUseCostCourse', 'defaultCourseEstimationTime']

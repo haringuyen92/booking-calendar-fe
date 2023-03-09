@@ -24,7 +24,7 @@
                 </div>
             </div>
             <div class="h__form_group row">
-                <label class="col-2" for="name">isUseCostStaff:</label>
+                <label class="col-2" for="name">isUseCostCourse:</label>
                 <div class="col-9">
                     <div class="d-flex flex-row gap-5">
                         <div class="d-flex align-content-center">
@@ -77,10 +77,15 @@ const settingSlot = reactive({
     isUseCostCourse: USED
 })
 
-const getListCourse = async () => {
-    const res = await CourseService.getAll(storeId);
-    if (res?.success) {
-        dataTable.rows = [...res.data];
+const initData = async () => {
+    const resSetting = await SettingSlotService.get(storeId);
+    const resList = await CourseService.getAll(storeId);
+    if(resSetting?.success){
+        settingSlot.isRequiredCourse = resSetting.data.isRequiredCourse || settingSlot.isRequiredCourse;
+        settingSlot.isUseCostCourse = resSetting.data.isUseCostCourse || settingSlot.isUseCostCourse;
+    }
+    if (resList?.success) {
+        dataTable.rows = [...resList.data];
     }
 }
 const getCourse = id => {
@@ -106,7 +111,7 @@ const deleteCourse = async () => {
     } else {
         alertStore.success(res.message);
         confirmModalStore.hide();
-        await getListCourse();
+        await initData();
     }
 }
 watch(isConfirm, () => {
@@ -126,7 +131,7 @@ const postSettingSlot = async () => {
     }
 }
 
-getListCourse();
+initData();
 </script>
 
 <style scoped>

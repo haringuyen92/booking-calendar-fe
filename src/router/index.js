@@ -55,7 +55,7 @@ const routes = [
                                 ]
                             },
                             {
-                                path: ':storeId/staff',
+                                path: '/stores/:storeId/staff',
                                 component: () => Staff,
                                 children: [
                                     {
