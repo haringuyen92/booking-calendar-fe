@@ -139,7 +139,9 @@
     if(!validateRePassword()) return false;
     const result = await AuthService.register(formData.name, formData.email, formData.password);
     if(result?.success){
-      await router.push({name: 'Dashboard'});
+      await router.push({
+        name: 'dashboard'
+      }).then(() => router.go());
     }else{
       setMessageErrorEmail('email duplicate');
     }
