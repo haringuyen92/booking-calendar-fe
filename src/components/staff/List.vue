@@ -1,6 +1,47 @@
 <template>
     <div ref="el">
         <div>
+            <div class="h__form_group row">
+                <label class="col-2" for="name">isRequiredStaff:</label>
+                <div class="col-9">
+                    <div class="d-flex flex-row gap-5">
+                        <div class="d-flex align-content-center">
+                            <input type="radio" v-model="settingSlot.isRequiredStaff" name="isRequiredStaff"
+                                   :value="USED" @change="postSettingSlot">
+                            <label class="ml-1 text-danger">used</label>
+                        </div>
+                        <div class="d-flex align-content-center">
+                            <input type="radio" v-model="settingSlot.isRequiredStaff" name="isRequiredStaff"
+                                   :value="OPTION" @change="postSettingSlot">
+                            <label class="ml-1 text-primary">option</label>
+                        </div>
+                        <div class="d-flex align-content-center">
+                            <input type="radio" v-model="settingSlot.isRequiredStaff" name="isRequiredStaff"
+                                   :value="NOT_USED" @change="postSettingSlot">
+                            <label class="ml-1">not used</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="h__form_group row">
+                <label class="col-2" for="name">isUseCostStaff:</label>
+                <div class="col-9">
+                    <div class="d-flex flex-row gap-5">
+                        <div class="d-flex align-content-center">
+                            <input type="radio" v-model="settingSlot.isUseCostStaff" name="isUseCostStaff" :value="USED"
+                                   @change="postSettingSlot">
+                            <label class="ml-1 text-primary">used</label>
+                        </div>
+                        <div class="d-flex align-content-center">
+                            <input type="radio" v-model="settingSlot.isUseCostStaff" name="isUseCostStaff"
+                                   :value="NOT_USED" @change="postSettingSlot">
+                            <label class="ml-1">not used</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
             <RouterLink :to="{name:'store.staff.create'}" type="button" class="btn btn-primary">New Staff</RouterLink>
         </div>
         <BaseModal v-model="modal.status" v-if="modal.status" @onCloseModal="closeModal" title="Setting Staff">
@@ -37,12 +78,13 @@ import {computed, reactive, toRefs, watch} from "vue";
 import StaffService from "@/services/staffService";
 import {useRoute} from "vue-router";
 import {router} from "@/router";
-import {EVENT_UPDATE_CONSTANT, STAFF_CONSTANT} from "@/common/constant";
+import {EVENT_UPDATE_CONSTANT, NOT_USED, OPTION, USED, STAFF_CONSTANT} from "@/common/constant";
 import {useConfirmModalStore} from "@/stores/confirmModalStore";
 import {useAlertStore} from "@/stores/alertStore";
 import {useSelectedStore} from "@/stores/selectedStore";
 import BaseModal from "@/components/ui/modal/BaseModal.vue";
 import CourseService from "@/services/courseService";
+import SettingSlotService from "@/services/settingSlotService";
 
 const selectedStore = useSelectedStore()
 const confirmModalStore = useConfirmModalStore();
@@ -62,6 +104,10 @@ const modal = reactive({
     isAllCourse: true,
     courses: []
 });
+const settingSlot = reactive({
+    isRequiredStaff: OPTION,
+    isUseCostStaff: USED
+})
 const showModal = () => modal.status = true;
 const closeModal = () => modal.status = false;
 const getListStaff = async () => {
@@ -124,6 +170,17 @@ const onSubmitSettingStaff = async () => {
         closeModal();
     }
 }
+const postSettingSlot = async () => {
+    const res = await SettingSlotService.update(storeId, {...settingSlot});
+    if (typeof res === 'string') {
+        // handler error
+        alertStore.error(res);
+    } else {
+        alertStore.success(res.message);
+        confirmModalStore.hide();
+    }
+}
+
 const selectAll = computed({
     get() {
         return modal.items.every((item) => item.checked)

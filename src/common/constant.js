@@ -9,5 +9,8 @@ export const STAFF_CONSTANT = 'staff';
 export const COURSE_CONSTANT = 'course';
 export const DEFAULT_START_TIME = '08:00';
 export const DEFAULT_END_TIME = '19:00';
+export const USED = 'used';
+export const NOT_USED = 'not_used';
+export const OPTION = 'option';
 
 
