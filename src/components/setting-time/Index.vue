@@ -4,90 +4,102 @@
     </div>
     <ul class="d-flex type_setting">
         <li class="mr-5 d-flex align-items-center">
-            <input id="cancelDailySetting" type="radio" name="isApplyDailySetting" v-model="configs.isApplyDailySetting" :value="false">
+            <input id="cancelDailySetting" type="radio" name="isApplyDailySetting" v-model="configs.isApplyDailySetting"
+                   :value="false">
             <label class="ml-1" for="cancelDailySetting">DailySetting</label>
         </li>
         <li class="d-flex align-items-center">
-            <input id="applyDailySetting" type="radio" name="isApplyDailySetting" v-model="configs.isApplyDailySetting" :value="true">
+            <input id="applyDailySetting" type="radio" name="isApplyDailySetting" v-model="configs.isApplyDailySetting"
+                   :value="true">
             <label class="ml-1" for="applyDailySetting">CustomSetting</label>
         </li>
     </ul>
-    <div class="setting_time">
-        <div class="d-flex align-items-center">
-            <div class="setting_time-left">
-                <label for="">dailySetting</label>
-            </div>
-            <div class="setting_time-right">
-                <div class="d-flex align-items-center">
-                    <div class="d-flex flex-column gap-2" v-if="!configs.settingTime.dailySetting.isAllDay">
-                        <div v-for="item in configs.settingTime.dailySetting.data" :key="item">
-                            <VueTimepicker input-class="display-time" v-model="item.from"></VueTimepicker>
-                            <span class="ml-1 mr-1">
-                                <b>~</b>
-                            </span>
-                            <VueTimepicker input-class="display-time" v-model="item.to"></VueTimepicker>
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-center ml-5">
-                        <input type="checkbox" v-model="configs.settingTime.dailySetting.isAllDay">
-                        <label for="" class="ml-2">isAllDay</label>
-                    </div>
-                    <div class="ml-5" v-if="!configs.settingTime.dailySetting.isAllDay">
-                        <button class="btn btn-light" @click="pushSlotTime(configs.settingTime.dailySetting)">
-                            <span class="text-danger">add</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="setting_time" v-if="!configs.isApplyDailySetting">
+        <SlotTime :setting="configs.dailySetting" @onPushSlotTime="pushSlotTime"
+                  @onRemoveSlotTime="removeSlotTime"></SlotTime>
     </div>
+    <div class="setting_time" v-else>
+        <SlotTime v-for="(setting, i) in configs.settingTime" :key="setting" :setting="setting" :slotTime="i"
+                  @onRemoveSlotTime="removeSlotTime"
+                  @onPushSlotTime="pushSlotTime"></SlotTime>
+    </div>
+    <button class="button is-success" @click="onSettingTime">SAVE</button>
 </template>
 <script setup>
 
 import {computed, reactive} from "vue";
 import {defaultSlotTime} from "@/helper/setting-time";
 import ToggleButton from "@/components/ui/Button/ToggleButton.vue";
-import VueTimepicker from 'vue3-timepicker/src/VueTimepicker.vue'
+import SlotTime from "@/components/setting-time/SlotTime.vue";
+import {useAlertStore} from "@/stores/alertStore";
+import SettingTimeService from "@/services/settingTimeService";
+import {useRoute} from "vue-router";
+
+const alertStore = useAlertStore();
+const {storeId} = useRoute().params;
 
 const getLabel = computed(() => configs.isActive ? 'ON' : 'OFF')
 const configs = reactive({
     isActive: false,
     isApplyDailySetting: false,
+    dailySetting: {label: 'dailySetting', ...defaultSlotTime()},
     settingTime: {
-        dailySetting: {label:'dailySetting',...defaultSlotTime()},
-        mondaySetting: defaultSlotTime(),
-        tuesdaySetting: defaultSlotTime(),
-        wednesdaySetting: defaultSlotTime(),
-        thursdaySetting: defaultSlotTime(),
-        fridaySetting: defaultSlotTime(),
-        saturdaySetting: defaultSlotTime(),
-        holidaySetting: defaultSlotTime(),
+        mondaySetting: {label: 'mondaySetting', ...defaultSlotTime()},
+        tuesdaySetting: {label: 'tuesdaySetting', ...defaultSlotTime()},
+        wednesdaySetting: {label: 'wednesdaySetting', ...defaultSlotTime()},
+        thursdaySetting: {label: 'thursdaySetting', ...defaultSlotTime()},
+        fridaySetting: {label: 'fridaySetting', ...defaultSlotTime()},
+        saturdaySetting: {label: 'saturdaySetting', ...defaultSlotTime()},
+        holidaySetting: {label: 'holidaySetting', ...defaultSlotTime()},
     }
-
 })
 
-const setActive = () => configs.isActive = !configs.isActive;
-for(let x in configs){
-    console.log(configs[x]);
-}
+const setActive = async () => {
+    configs.isActive = !configs.isActive
+    const res = await SettingTimeService.update(storeId, {isOpen: configs.isActive})
+    if(typeof res === 'string'){
+        alertStore.error(res.message);
+    }else{
+        alertStore.success(res.message);
+    }
+};
 const pushSlotTime = slot => {
-  slot.data.push(defaultSlotTime());
+    const getLastSlotTime = () => slot.data[slot.data.length - 1];
+    if (slot.data.length < 3) {
+        slot.data.push({...getLastSlotTime()});
+    } else {
+        alertStore.error(`${slot.label} is max 3 slot time`)
+    }
 }
+const removeSlotTime = (slot, i) => {
+    slot.splice(i, 1);
+}
+const onSettingTime = async () => {
+    if(configs.isApplyDailySetting){
+
+    }else{
+
+    }
+}
+const initData = async () => {
+    const res = await SettingTimeService.get(storeId);
+    const {success, data} = res;
+    if(success){
+        configs.isActive = data.isOpen;
+    }
+}
+initData();
 </script>
 <style scoped>
-.type_setting{
+.type_setting {
     display: flex;
     padding-left: 15px;
     padding-top: 15px;
 }
-.setting_time{
+
+.setting_time {
     padding: 15px;
-}
-.setting_time-left{
-    flex-basis: 15%;
-}
-.setting_time-right{
-    flex-basis: 85%;
+    max-width: 695px;
 }
 
 </style>
