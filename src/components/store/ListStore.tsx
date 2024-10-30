@@ -34,8 +34,8 @@ const ListStore: React.FC = () => {
         navigate('/stores/create');
     };
 
-    const handleSetting = () => {
-        navigate('/stores/setting');
+    const handleSetting = (id: string) => {
+        navigate(`/stores/${id}/setting`);
     };
 
     const handleUpdate = (id: string) => {
@@ -98,7 +98,7 @@ const ListStore: React.FC = () => {
                             </td>
                             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                 <button
-                                    onClick={handleSetting}
+                                    onClick={() => handleSetting(store.id)}
                                     className="text-gray-600 hover:text-gray-900 mr-2"
                                 >
                                     Cài đặt
