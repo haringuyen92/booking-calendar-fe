@@ -51,7 +51,7 @@ const SettingStore: React.FC = () => {
     const renderTabContent = () => {
         switch (activeTab) {
             case 'setting-time':
-                return <SettingTime storeId={id as string} />;
+                return <SettingTime store_id={id as string} />;
             case 'setting-slot':
                 return <SettingSlot storeId={id as string} />;
             case 'setting-booking':
@@ -59,7 +59,7 @@ const SettingStore: React.FC = () => {
             case 'setting-action':
                 return <SettingAction storeId={id as string} />;
             default:
-                return <SettingTime storeId={id as string} />;
+                return <SettingTime store_id={id as string} />;
         }
     };
 
