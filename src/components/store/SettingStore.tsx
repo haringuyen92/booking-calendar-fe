@@ -53,9 +53,9 @@ const SettingStore: React.FC = () => {
             case 'setting-time':
                 return <SettingTime store_id={id as string} />;
             case 'setting-slot':
-                return <SettingSlot storeId={id as string} />;
+                return <SettingSlot store_id={id as string} />;
             case 'setting-booking':
-                return <SettingBooking storeId={id as string} />;
+                return <SettingBooking store_id={id as string} />;
             case 'setting-action':
                 return <SettingAction storeId={id as string} />;
             default:

@@ -82,7 +82,11 @@ const SettingTime: React.FC<SettingTimeProps> = ({ store_id }) => {
     }, [store_id]);
 
     if (isLoading) {
-        return <div>Loading...</div>;
+        return (
+            <div className="flex justify-center items-center h-screen">
+                <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+            </div>
+        );
     }
 
 
@@ -175,60 +179,72 @@ const SettingTime: React.FC<SettingTimeProps> = ({ store_id }) => {
         }
         return (
             <div className="space-y-4">
-                <div>
+                <div className="flex items-center space-x-4">
                     <label className="inline-flex items-center">
                         <input
                             type="checkbox"
-                            className="form-checkbox"
+                            className="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                             checked={settings?.is_open_all_day}
                             onChange={(e) => updateDaySettings(day, 'is_open_all_day', e.target.checked)}
                         />
-                        <span className="ml-2">Mở cả ngày</span>
+                        <span className="ml-2 text-sm font-medium text-gray-700">Mở cả ngày</span>
                     </label>
-                </div>
-                <div>
                     <label className="inline-flex items-center">
                         <input
                             type="checkbox"
-                            className="form-checkbox"
+                            className="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                             checked={settings?.is_off_day}
                             onChange={(e) => updateDaySettings(day, 'is_off_day', e.target.checked)}
                         />
-                        <span className="ml-2">Ngày nghỉ</span>
+                        <span className="ml-2 text-sm font-medium text-gray-700">Ngày nghỉ</span>
                     </label>
                 </div>
                 <div>
-                    <label className="block text-sm font-medium text-gray-700">Thời gian mở cửa</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Thời gian mở cửa</label>
                     {settings.slot_time?.map((slot, slotIndex) => (
                         <div key={slotIndex} className="flex items-center space-x-2 mt-2">
-                            <input
-                                type="time"
-                                value={formatTimeForInput(slot?.time_start)}
-                                onChange={(e) => updateTimeSlot(day, slotIndex, 'time_start', e.target.value)}
-                                className="form-input"
-                            />
-                            <input
-                                type="time"
-                                value={formatTimeForInput(slot?.time_end)}
-                                onChange={(e) => updateTimeSlot(day, slotIndex, 'time_end', e.target.value)}
-                                className="form-input"
-                            />
-                            <button
-                                type="button"
-                                onClick={() => addTimeSlot(day)}
-                                className="px-2 py-1 bg-green-500 text-white rounded"
-                            >
-                                +
-                            </button>
-                            {settings?.slot_time && settings.slot_time.length > 1 && (
+                            <div className="flex-grow flex items-center space-x-2">
+                                <input
+                                    type="time"
+                                    value={formatTimeForInput(slot?.time_start)}
+                                    onChange={(e) => updateTimeSlot(day, slotIndex, 'time_start', e.target.value)}
+                                    className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                                />
+                                <span className="text-gray-500">đến</span>
+                                <input
+                                    type="time"
+                                    value={formatTimeForInput(slot?.time_end)}
+                                    onChange={(e) => updateTimeSlot(day, slotIndex, 'time_end', e.target.value)}
+                                    className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                                />
+                            </div>
+                            <div className="flex items-center space-x-1">
                                 <button
                                     type="button"
-                                    onClick={() => removeTimeSlot(day, slotIndex)}
-                                    className="px-2 py-1 bg-red-500 text-white rounded"
+                                    onClick={() => addTimeSlot(day)}
+                                    className="p-2 bg-blue-100 text-blue-600 rounded-full hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-200"
                                 >
-                                    -
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20"
+                                         fill="currentColor">
+                                        <path fillRule="evenodd"
+                                              d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                                              clipRule="evenodd"/>
+                                    </svg>
                                 </button>
-                            )}
+                                {settings?.slot_time && settings.slot_time.length > 1 && (
+                                    <button
+                                        type="button"
+                                        onClick={() => removeTimeSlot(day, slotIndex)}
+                                        className="p-2 bg-red-100 text-red-600 rounded-full hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 transition-colors duration-200"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20"
+                                             fill="currentColor">
+                                            <path fillRule="evenodd" d="M5 10a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z"
+                                                  clipRule="evenodd"/>
+                                        </svg>
+                                    </button>
+                                )}
+                            </div>
                         </div>
                     ))}
                 </div>
@@ -237,64 +253,74 @@ const SettingTime: React.FC<SettingTimeProps> = ({ store_id }) => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-                <label className="block text-sm font-medium text-gray-700">Trạng thái mở cửa</label>
-                <div className="mt-2 space-x-4">
+        <div className="max-w-4xl mx-auto p-8 bg-white shadow-lg rounded-lg">
+            <h2 className="text-3xl font-bold mb-8 text-gray-800">Cài đặt thời gian</h2>
+            <form onSubmit={handleSubmit} className="space-y-8">
+                <div className="bg-gray-50 p-6 rounded-lg shadow-sm">
+                    <h3 className="text-xl font-semibold text-gray-800 mb-4">Trạng thái mở cửa</h3>
+                    <div className="space-x-4">
+                        <label className="inline-flex items-center">
+                            <input
+                                type="radio"
+                                className="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300"
+                                name="is_open"
+                                checked={settingTime.is_open}
+                                onChange={() => updateSettingTime('is_open', true)}
+                            />
+                            <span className="ml-2 text-sm font-medium text-gray-700">Mở cửa</span>
+                        </label>
+                        <label className="inline-flex items-center">
+                            <input
+                                type="radio"
+                                className="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300"
+                                name="is_open"
+                                checked={!settingTime.is_open}
+                                onChange={() => updateSettingTime('is_open', false)}
+                            />
+                            <span className="ml-2 text-sm font-medium text-gray-700">Đóng cửa</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div className="bg-gray-50 p-6 rounded-lg shadow-sm">
                     <label className="inline-flex items-center">
                         <input
-                            type="radio"
-                            className="form-radio"
-                            name="is_open"
-                            checked={settingTime.is_open}
-                            onChange={() => updateSettingTime('is_open', true)}
+                            type="checkbox"
+                            className="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                            checked={settingTime.is_apply_daily_setting}
+                            onChange={(e) => updateSettingTime('is_apply_daily_setting', e.target.checked)}
                         />
-                        <span className="ml-2">Mở cửa</span>
-                    </label>
-                    <label className="inline-flex items-center">
-                        <input
-                            type="radio"
-                            className="form-radio"
-                            name="is_open"
-                            checked={!settingTime.is_open}
-                            onChange={() => updateSettingTime('is_open', false)}
-                        />
-                        <span className="ml-2">Đóng cửa</span>
+                        <span className="ml-2 text-sm font-medium text-gray-700">Áp dụng cài đặt hàng ngày</span>
                     </label>
                 </div>
-            </div>
-            <div>
-                <label className="inline-flex items-center">
-                    <input
-                        type="checkbox"
-                        className="form-checkbox"
-                        checked={settingTime.is_apply_daily_setting}
-                        onChange={(e) => updateSettingTime('is_apply_daily_setting', e.target.checked)}
-                    />
-                    <span className="ml-2">Áp dụng cài đặt hàng ngày</span>
-                </label>
-            </div>
-            {settingTime.is_apply_daily_setting ? (
-                <div className="border-t pt-4">
-                    {renderTimeSettings('daily_setting')}
+
+                {settingTime.is_apply_daily_setting ? (
+                    <div className="bg-gray-50 p-6 rounded-lg shadow-sm">
+                        <h3 className="text-xl font-semibold text-gray-800 mb-4">Cài đặt hàng ngày</h3>
+                        {renderTimeSettings('daily_setting')}
+                    </div>
+                ) : (
+                    <div className="space-y-6">
+                        {['monday_setting', 'tuesday_setting', 'wednesday_setting', 'thursday_setting', 'friday_setting', 'saturday_setting', 'sunday_setting'].map((day, index) => (
+                            <div key={day} className="bg-gray-50 p-6 rounded-lg shadow-sm">
+                                <h3 className="text-xl font-semibold text-gray-800 mb-4">{daysOfWeek[index]}</h3>
+                                {renderTimeSettings(day as keyof SettingTime)}
+                            </div>
+                        ))}
+                    </div>
+                )}
+
+                <div className="flex justify-end">
+                    <button
+                        type="submit"
+                        className="px-6 py-3 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-300"
+                    >
+                        Lưu cài đặt
+                    </button>
                 </div>
-            ) : (
-                <div className="space-y-6">
-                    {['monday_setting', 'tuesday_setting', 'wednesday_setting', 'thursday_setting', 'friday_setting', 'saturday_setting', 'sunday_setting'].map((day, index) => (
-                        <div key={day} className="border-t pt-4">
-                            <h3 className="font-medium mb-2">{daysOfWeek[index]}</h3>
-                            {renderTimeSettings(day as keyof SettingTime)}
-                        </div>
-                    ))}
-                </div>
-            )}
-            <button
-                type="submit"
-                className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-            >
-                Lưu cài đặt
-            </button>
-        </form>
+            </form>
+        </div>
+
     );
 };
 
