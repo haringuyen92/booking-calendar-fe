@@ -41,6 +41,10 @@ const ListStore: React.FC = () => {
         navigate('/stores/create');
     };
 
+    const handleManagement = (id: string)  => {
+        navigate(`/stores/${id}/management`);
+    }
+
     const handleSetting = (id: string) => {
         navigate(`/stores/${id}/setting`);
     };
@@ -90,6 +94,12 @@ const ListStore: React.FC = () => {
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{store.phone}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{store.address}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <button
+                                    onClick={() => handleManagement(store.id)}
+                                    className="text-yellow-600 hover:text-yellow-900 mr-4 px-3 py-1 rounded-md border border-yellow-600 hover:bg-yellow-100 transition-colors duration-300"
+                                >
+                                    Quản lý
+                                </button>
                                 <button
                                     onClick={() => handleSetting(store.id)}
                                     className="text-yellow-600 hover:text-yellow-900 mr-4 px-3 py-1 rounded-md border border-yellow-600 hover:bg-yellow-100 transition-colors duration-300"

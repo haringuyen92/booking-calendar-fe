@@ -42,7 +42,7 @@ const SettingSlot: React.FC<SettingSlotProps> = ({ store_id }) => {
                 const response = await get<SettingSlot>(`/stores/${store_id}/setting-slot`);
                 setSettingSlot(response.data);
             } catch (error) {
-                console.error('Failed to fetch setting slot.', error);
+                console.error('Failed to fetch setting management.', error);
             } finally {
                 setIsLoading(false);
             }
@@ -70,13 +70,13 @@ const SettingSlot: React.FC<SettingSlotProps> = ({ store_id }) => {
         try {
             const response = await put<SettingSlot>(`/stores/${store_id}/setting-slot`, settingSlot);
             if (response.code === 200) {
-                showToastSuccess('Setting slot updated successfully');
+                showToastSuccess('Setting management updated successfully');
                 navigate(`/stores`);
             } else {
                 showToastError(`Failed to update setting slot: ${response.message}`);
             }
         } catch (error) {
-            console.error('Failed to update setting slot', error);
+            console.error('Failed to update setting management', error);
             showToastError(`Failed to update setting slot: ${error}`);
         }
     };
@@ -149,7 +149,8 @@ const SettingSlot: React.FC<SettingSlotProps> = ({ store_id }) => {
                 </div>
 
                 <div className="bg-gray-50 p-6 rounded-lg shadow-sm">
-                    <h3 className="text-xl font-semibold text-gray-800 mb-4">Thời gian ước tính mặc định cho khóa học</h3>
+                    <h3 className="text-xl font-semibold text-gray-800 mb-4">Thời gian ước tính mặc định cho khóa
+                        học</h3>
                     <div className="flex items-center space-x-3">
                         <input
                             type="number"
