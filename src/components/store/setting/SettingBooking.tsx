@@ -79,6 +79,9 @@ const SettingBooking: React.FC<SettingBookingProps> = ({ store_id }) => {
             showToastError(`Failed to update setting booking ${error}`);
         }
     }
+    const handleCancel = () => {
+        navigate(`/stores/`); // Quay lại trang trước đó
+    };
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value, type, checked } = e.target;
         setSettingBooking(prev => ({
@@ -161,7 +164,14 @@ const SettingBooking: React.FC<SettingBookingProps> = ({ store_id }) => {
                     );
                 })}
 
-                <div className="flex justify-end">
+                <div className="flex justify-end space-x-4">
+                    <button
+                        type="button"
+                        onClick={handleCancel}
+                        className="px-6 py-3 bg-gray-300 text-gray-700 font-medium rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors duration-300"
+                    >
+                        Hủy
+                    </button>
                     <button
                         type="submit"
                         className="px-6 py-3 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-300"

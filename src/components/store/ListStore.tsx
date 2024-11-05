@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { get } from "../../utils/api";
+import { showToastError } from "../../utils/toast";
 
 interface Store {
     id: string;
@@ -17,17 +18,23 @@ interface Store {
 const ListStore: React.FC = () => {
     const navigate = useNavigate();
     const [stores, setStores] = useState<Store[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        (async () => {
+        const fetchStores = async () => {
             try {
+                setIsLoading(true);
                 const response = await get<Store[]>('/stores/');
                 setStores(response.data);
             } catch (error) {
                 console.error('Failed to fetch stores:', error);
-                // Xử lý lỗi (ví dụ: hiển thị thông báo lỗi)
+                showToastError('Failed to fetch stores');
+            } finally {
+                setIsLoading(false);
             }
-        })();
+        };
+
+        fetchStores();
     }, []);
 
     const handleCreate = () => {
@@ -42,70 +49,56 @@ const ListStore: React.FC = () => {
         navigate(`/stores/${id}`);
     };
 
+    if (isLoading) {
+        return (
+            <div className="flex justify-center items-center h-screen">
+                <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+            </div>
+        )
+    }
+
     return (
-        <div className="container mx-auto px-4 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div className="flex justify-between items-center mb-6">
-                <h1 className="text-3xl font-bold text-gray-800">Danh sách Store</h1>
+                <h2 className="text-3xl font-bold text-gray-800">Danh sách Store</h2>
                 <button
                     onClick={handleCreate}
-                    className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
+                    className="px-6 py-3 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-300"
                 >
                     Tạo mới
                 </button>
             </div>
 
-            <div className="overflow-x-auto bg-white shadow-md rounded-lg">
-                <table className="min-w-full leading-normal">
-                    <thead>
+            <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+                <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
                     <tr>
-                        <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                            ID
-                        </th>
-                        <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                            Tên Store
-                        </th>
-                        <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                            Email
-                        </th>
-                        <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                            Phone
-                        </th>
-                        <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                            Address
-                        </th>
-                        <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                            Hành động
-                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tên Store</th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Address</th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hành động</th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody className="bg-white divide-y divide-gray-200">
                     {stores.map(store => (
                         <tr key={store.id}>
-                            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <p className="text-gray-900 whitespace-no-wrap">{store.id}</p>
-                            </td>
-                            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <p className="text-gray-900 whitespace-no-wrap">{store.name}</p>
-                            </td>
-                            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <p className="text-gray-900 whitespace-no-wrap">{store.email}</p>
-                            </td>
-                            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <p className="text-gray-900 whitespace-no-wrap">{store.phone}</p>
-                            </td>
-                            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <p className="text-gray-900 whitespace-no-wrap">{store.address}</p>
-                            </td>
-                            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{store.id}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{store.name}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{store.email}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{store.phone}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{store.address}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                 <button
                                     onClick={() => handleSetting(store.id)}
-                                    className="text-gray-600 hover:text-gray-900 mr-2"
+                                    className="text-yellow-600 hover:text-yellow-900 mr-4 px-3 py-1 rounded-md border border-yellow-600 hover:bg-yellow-100 transition-colors duration-300"
                                 >
                                     Cài đặt
                                 </button>
                                 <button
                                     onClick={() => handleUpdate(store.id)}
-                                    className="text-blue-600 hover:text-blue-900"
+                                    className="text-blue-600 hover:text-blue-900 px-3 py-1 rounded-md border border-blue-600 hover:bg-blue-100 transition-colors duration-300"
                                 >
                                     Cập nhật
                                 </button>
