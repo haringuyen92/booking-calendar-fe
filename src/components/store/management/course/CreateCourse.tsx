@@ -1,6 +1,6 @@
 // components/CreateCourse.tsx
 import React, { useState } from 'react';
-import BaseModal from '../../../base/BaseModal';
+import BaseModal from '../../../base/modal/BaseModal';
 import { post } from '../../../../utils/api';
 import { showToastError, showToastSuccess } from '../../../../utils/toast';
 
@@ -42,7 +42,8 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ isOpen, onClose, storeId, o
         setNewCourse(prev => ({ ...prev, [name]: name === 'cost' || name === 'estimate_time' || name === 'active' || name === 'position' ? Number(value) : value }));
     };
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault()
         try {
             const response = await post<Course>(`/stores/${storeId}/courses`, newCourse);
             onCourseCreated(response.data);
@@ -73,7 +74,7 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ isOpen, onClose, storeId, o
             title="Tạo Khóa học mới"
             footer={modalFooter}
         >
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form id="createCourseForm" onSubmit={handleSubmit} className="space-y-6">
                 <div>
                     <label htmlFor="name" className="block text-sm font-medium text-gray-700">Tên khóa học</label>
                     <input
@@ -82,7 +83,6 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ isOpen, onClose, storeId, o
                         name="name"
                         value={newCourse.name}
                         onChange={handleInputChange}
-                        required
                         className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                     />
                 </div>
@@ -105,7 +105,6 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ isOpen, onClose, storeId, o
                         rows={3}
                         value={newCourse.description}
                         onChange={handleInputChange}
-                        required
                         className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                     />
                 </div>
@@ -117,7 +116,6 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ isOpen, onClose, storeId, o
                         name="cost"
                         value={newCourse.cost}
                         onChange={handleInputChange}
-                        required
                         className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                     />
                 </div>
@@ -129,7 +127,6 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ isOpen, onClose, storeId, o
                         name="estimate_time"
                         value={newCourse.estimate_time}
                         onChange={handleInputChange}
-                        required
                         className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                     />
                 </div>

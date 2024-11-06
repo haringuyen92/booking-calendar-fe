@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
-import {showToastError} from "../../../../utils/toast";
-import {get} from "../../../../utils/api";
+import {showToastError, showToastSuccess} from "../../../../utils/toast";
+import {del, get} from "../../../../utils/api";
 import CreateCourse from "./CreateCourse";
 import UpdateCourse from "./UpdateCourse";
+import ModalConfirm from "../../../base/modal/ModalConfirm";
 
 interface ListStoreProps {
     store_id: string
@@ -23,30 +24,30 @@ interface Course {
 
 
 const ListCourse: React.FC<ListStoreProps> = ({store_id}) => {
-    const navigate = useNavigate();
     const [courses, setCourses] = useState<Course[]>([]);
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
     const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [courseToDelete, setCourseToDelete] = useState<Course | null>(null);
 
-    useEffect(() => {
-        const fetchListCourse = async () =>{
-            try {
-                const response = await get<Course[]>(`/stores/${store_id}/courses`);
-                setCourses(response.data);
-            } catch (error) {
-                console.error('Failed to fetch courses:', error);
-                showToastError('Failed to fetch courses');
-            }
+    const fetchListCourse = useCallback(async () =>{
+        try {
+            const response = await get<Course[]>(`/stores/${store_id}/courses`);
+            setCourses(response.data);
+        } catch (error) {
+            console.error('Failed to fetch courses:', error);
+            showToastError('Failed to fetch courses');
         }
+    }, [store_id])
+    useEffect(() => {
         fetchListCourse();
-    }, [store_id]);
-
+    }, [fetchListCourse]);
     const handleAddCourse = () => {
         setIsCreateModalOpen(true);
     };
     const handleCourseCreated = (newCourse: Course) => {
-        setCourses(prevCourses => [...prevCourses, newCourse]);
+        fetchListCourse();
     };
 
     const handleUpdateCourse = (courseId: string) => {
@@ -55,11 +56,28 @@ const ListCourse: React.FC<ListStoreProps> = ({store_id}) => {
     };
 
     const handleCourseUpdated = (updatedCourse: Course) => {
-        setCourses(prevCourses => prevCourses.map(course =>
-            course.id === updatedCourse.id ? updatedCourse : course
-        ));
+        fetchListCourse();
     };
 
+    const handleDeleteCourse = (course: Course) => {
+        setCourseToDelete(course)
+        setIsDeleteModalOpen(true);
+    }
+
+    const confirmDeleteCourse = async () => {
+        if (courseToDelete) {
+           try {
+               await del(`/stores/${store_id}/courses/${courseToDelete.id}`);
+               showToastSuccess('Khóa học đã được xóa thành công')
+               fetchListCourse();
+           } catch (error) {
+               console.error('Failed to delete course:', error);
+               showToastError('Không thể xóa khóa học');
+           }
+        }
+        setIsDeleteModalOpen(false);
+        setCourseToDelete(null);
+    }
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div className="flex justify-between items-center mb-6">
@@ -102,9 +120,15 @@ const ListCourse: React.FC<ListStoreProps> = ({store_id}) => {
                                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                     <button
                                         onClick={() => handleUpdateCourse(course.id)}
-                                        className="text-blue-600 hover:text-blue-900 px-3 py-1 rounded-md border border-blue-600 hover:bg-blue-100 transition-colors duration-300"
+                                        className="text-blue-600 hover:text-blue-900 px-3 py-1 rounded-md border border-blue-600 hover:bg-blue-100 transition-colors duration-300 mr-2"
                                     >
                                         Cập nhật
+                                    </button>
+                                    <button
+                                        onClick={() => handleDeleteCourse(course)}
+                                        className="text-red-600 hover:text-red-900 px-3 py-1 rounded-md border border-red-600 hover:bg-red-100 transition-colors duration-300"
+                                    >
+                                        Xóa
                                     </button>
                                 </td>
                             </tr>
@@ -126,6 +150,16 @@ const ListCourse: React.FC<ListStoreProps> = ({store_id}) => {
                 storeId={store_id}
                 courseId={selectedCourseId || ''}
                 onCourseUpdated={handleCourseUpdated}
+            />
+
+            <ModalConfirm
+                isOpen={isDeleteModalOpen}
+                onClose={() => setIsDeleteModalOpen(false)}
+                onConfirm={confirmDeleteCourse}
+                title="Xác nhận xóa nhân viên"
+                message={`Bạn có chắc chắn muốn xóa nhân viên ${courseToDelete?.name}?`}
+                confirmText="Xóa"
+                cancelText="Hủy"
             />
         </div>
     );

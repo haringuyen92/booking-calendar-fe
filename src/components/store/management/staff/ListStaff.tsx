@@ -1,9 +1,10 @@
 // components/ListStaff.tsx
-import React, { useEffect, useState } from "react";
-import { get } from "../../../../utils/api";
-import { showToastError } from "../../../../utils/toast";
+import React, {useCallback, useEffect, useState} from "react";
+import { get, del } from "../../../../utils/api";
+import {showToastError, showToastSuccess} from "../../../../utils/toast";
 import CreateStaff from "./CreateStaff";
 import UpdateStaff from "./UpdateStaff";
+import ModalConfirm from "../../../base/modal/ModalConfirm";
 
 interface ListStaffProps {
     store_id: string;
@@ -23,24 +24,26 @@ interface Staff {
 }
 
 const ListStaff: React.FC<ListStaffProps> = ({ store_id }) => {
-    const [staffList, setStaffList] = useState<Staff[]>([]);
+    const [staffs, setStaffs] = useState<Staff[]>([]);
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
     const [selectedStaffId, setSelectedStaffId] = useState<string | null>(null);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [staffToDelete, setStaffToDelete] = useState<Staff | null>(null);
 
-    useEffect(() => {
-        fetchStaff();
-    }, [store_id]);
-
-    const fetchStaff = async () => {
+    const fetchListStaff = useCallback(async () => {
         try {
             const response = await get<Staff[]>(`/stores/${store_id}/staffs`);
-            setStaffList(response.data);
+            setStaffs(response.data);
         } catch (error) {
             console.error('Failed to fetch staff:', error);
             showToastError('Không thể tải danh sách nhân viên');
         }
-    };
+    }, [store_id])
+
+    useEffect(() => {
+        fetchListStaff();
+    }, [fetchListStaff]);
 
     const handleAddStaff = () => {
         setIsCreateModalOpen(true);
@@ -52,13 +55,31 @@ const ListStaff: React.FC<ListStaffProps> = ({ store_id }) => {
     };
 
     const handleStaffCreated = (newStaff: Staff) => {
-        setStaffList(prevStaff => [...prevStaff, newStaff]);
+        fetchListStaff();
     };
 
     const handleStaffUpdated = (updatedStaff: Staff) => {
-        setStaffList(prevStaff => prevStaff.map(staff =>
-            staff.id === updatedStaff.id ? updatedStaff : staff
-        ));
+        fetchListStaff();
+    };
+
+    const handleDeleteStaff = (staff: Staff) => {
+        setStaffToDelete(staff);
+        setIsDeleteModalOpen(true);
+    };
+
+    const confirmDeleteStaff = async () => {
+        if (staffToDelete) {
+            try {
+                await del(`/stores/${store_id}/staffs/${staffToDelete.id}`);
+                showToastSuccess('Nhân viên đã được xóa thành công');
+                fetchListStaff();
+            } catch (error) {
+                console.error('Failed to delete staff:', error);
+                showToastError('Không thể xóa nhân viên');
+            }
+        }
+        setIsDeleteModalOpen(false);
+        setStaffToDelete(null);
     };
 
     return (
@@ -86,12 +107,12 @@ const ListStaff: React.FC<ListStaffProps> = ({ store_id }) => {
                     </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                    {staffList.map((staff) => (
+                    {staffs.map((staff) => (
                         <tr key={staff.id}>
                             <td className="px-6 py-4 whitespace-nowrap">{staff.name}</td>
                             <td className="px-6 py-4 whitespace-nowrap">{staff.email}</td>
                             <td className="px-6 py-4 whitespace-nowrap">{staff.phone}</td>
-                            <td className="px-6 py-4 whitespace-nowrap">{staff.cost}</td>
+                            <td className="px-6 py-4 whitespace-nowrap">{staff.cost.toFixed(2)}</td>
                             <td className="px-6 py-4 whitespace-nowrap">
                                     <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${staff.active === 1 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
                                         {staff.active === 1 ? 'Hoạt động' : 'Không hoạt động'}
@@ -100,9 +121,15 @@ const ListStaff: React.FC<ListStaffProps> = ({ store_id }) => {
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                 <button
                                     onClick={() => handleUpdateStaff(staff.id)}
-                                    className="text-blue-600 hover:text-blue-900 px-3 py-1 rounded-md border border-blue-600 hover:bg-blue-100 transition-colors duration-300"
+                                    className="text-blue-600 hover:text-blue-900 px-3 py-1 rounded-md border border-blue-600 hover:bg-blue-100 transition-colors duration-300 mr-2"
                                 >
                                     Cập nhật
+                                </button>
+                                <button
+                                    onClick={() => handleDeleteStaff(staff)}
+                                    className="text-red-600 hover:text-red-900 px-3 py-1 rounded-md border border-red-600 hover:bg-red-100 transition-colors duration-300"
+                                >
+                                    Xóa
                                 </button>
                             </td>
                         </tr>
@@ -124,6 +151,16 @@ const ListStaff: React.FC<ListStaffProps> = ({ store_id }) => {
                 storeId={store_id}
                 staffId={selectedStaffId || ''}
                 onStaffUpdated={handleStaffUpdated}
+            />
+
+            <ModalConfirm
+                isOpen={isDeleteModalOpen}
+                onClose={() => setIsDeleteModalOpen(false)}
+                onConfirm={confirmDeleteStaff}
+                title="Xác nhận xóa nhân viên"
+                message={`Bạn có chắc chắn muốn xóa nhân viên ${staffToDelete?.name}?`}
+                confirmText="Xóa"
+                cancelText="Hủy"
             />
         </div>
     );

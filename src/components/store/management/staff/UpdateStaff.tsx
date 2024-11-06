@@ -1,6 +1,6 @@
 // components/UpdateStaff.tsx
 import React, { useState, useEffect } from 'react';
-import BaseModal from '../../../base/BaseModal';
+import BaseModal from '../../../base/modal/BaseModal';
 import { get, put } from '../../../../utils/api';
 import { showToastError, showToastSuccess } from '../../../../utils/toast';
 
@@ -57,7 +57,7 @@ const UpdateStaff: React.FC<UpdateStaffProps> = ({ isOpen, onClose, storeId, sta
         if (!staff) return;
 
         try {
-            const response = await put<Staff>(`/stores/${storeId}/staff/${staffId}`, staff);
+            const response = await put<Staff>(`/stores/${storeId}/staffs/${staffId}`, staff);
             onStaffUpdated(response.data);
             onClose();
             showToastSuccess('Nhân viên đã được cập nhật thành công');
@@ -97,7 +97,6 @@ const UpdateStaff: React.FC<UpdateStaffProps> = ({ isOpen, onClose, storeId, sta
                         name="name"
                         value={staff.name}
                         onChange={handleInputChange}
-                        required
                         className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                     />
                 </div>
@@ -109,7 +108,6 @@ const UpdateStaff: React.FC<UpdateStaffProps> = ({ isOpen, onClose, storeId, sta
                         name="email"
                         value={staff.email}
                         onChange={handleInputChange}
-                        required
                         className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                     />
                 </div>
@@ -121,7 +119,6 @@ const UpdateStaff: React.FC<UpdateStaffProps> = ({ isOpen, onClose, storeId, sta
                         name="phone"
                         value={staff.phone}
                         onChange={handleInputChange}
-                        required
                         className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                     />
                 </div>
@@ -133,7 +130,6 @@ const UpdateStaff: React.FC<UpdateStaffProps> = ({ isOpen, onClose, storeId, sta
                         name="cost"
                         value={staff.cost}
                         onChange={handleInputChange}
-                        required
                         className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                     />
                 </div>
@@ -145,7 +141,6 @@ const UpdateStaff: React.FC<UpdateStaffProps> = ({ isOpen, onClose, storeId, sta
                         name="max_booking_slot"
                         value={staff.max_booking_slot}
                         onChange={handleInputChange}
-                        required
                         className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                     />
                 </div>
